@@ -164,5 +164,5 @@ Email the Week 2 instructors before Week 2 starts so that they can help with any
 
 | Name | Email |
 |---|---|
-| Christos Andronis | |
-| Electra Tsaglioti | |
+| Christos Andronis | ch.andronis@imbb.forth.gr |
+| Electra Tsaglioti | electra_tsaglioti@imbb.forth.gr |
