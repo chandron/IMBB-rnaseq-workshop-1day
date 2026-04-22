@@ -27,7 +27,7 @@ Once the installation finishes, continue to Step 2. You will verify R is working
 
 ### 3. Verify installation
 
-Open RStudio. In the **Console** pane (bottom-left), paste the following and press Enter:
+Open RStudio. In the **Console** pane, paste the following and press Enter:
 
 ```r
 print("All good.")
@@ -72,7 +72,7 @@ If it prints version information, R is installed correctly.
 
 ### 3. Verify installation
 
-Open RStudio. In the **Console** pane (bottom-left), paste the following and press Enter:
+Open RStudio. In the **Console** pane, paste the following and press Enter:
 
 ```r
 print("All good.")
@@ -118,7 +118,7 @@ sudo apt --fix-broken install
 
 ### 3. Verify installation
 
-Open RStudio. In the **Console** pane (bottom-left), paste the following and press Enter:
+Open RStudio. In the **Console** pane, paste the following and press Enter:
 
 ```r
 print("All good.")
