@@ -41,6 +41,7 @@ print("All good.")
 
 If it prints "All good." — the environment is ready.
 
+
 ### Windows troubleshooting
 
 **R not found after installation**
