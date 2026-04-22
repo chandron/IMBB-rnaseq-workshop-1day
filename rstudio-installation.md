@@ -80,7 +80,7 @@ If it prints version information, R is installed correctly.
 
 ### 3. Verify installation
 
-Open RStudio. In the **Console** pane (bottom-left), paste the following and press Enter:
+Open RStudio. In the **Console** pane, paste the following and press Enter:
 
 ```r
 print("All good.")
@@ -135,7 +135,7 @@ sudo apt --fix-broken install
 
 ### 3. Verify installation
 
-Open RStudio. In the **Console** pane (bottom-left), paste the following and press Enter:
+Open RStudio. In the **Console** pane, paste the following and press Enter:
 
 ```r
 print("All good.")
@@ -162,5 +162,5 @@ If you are stuck on any setup issues, email the Week 2 instructors before Week 2
 
 | Name | Email |
 |---|---|
-| Christos Andronis | |
-| Electra Tsaglioti | |
+| Christos Andronis | ch.andronis@imbb.forth.gr |
+| Electra Tsaglioti | electra_tsaglioti@imbb.forth.gr |
