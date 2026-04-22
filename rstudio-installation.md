@@ -31,7 +31,7 @@ If it prints version information, R is installed correctly.
 4. Follow the setup wizard with default settings
 5. Launch RStudio from the Start menu
 
-### 3. Install required packages
+### 3. Verify installation
 
 Open RStudio. In the **Console** pane (bottom-left), paste the following and press Enter:
 
@@ -80,7 +80,7 @@ If it prints version information, R is installed correctly.
 
 > **Note:** On first launch, macOS may warn about an unidentified developer. If it does so, go to **System Settings → Privacy & Security** and click **Open Anyway**.
 
-### 3. Install required packages
+### 3. Verify installation
 
 Open RStudio. In the **Console** pane (bottom-left), paste the following and press Enter:
 
