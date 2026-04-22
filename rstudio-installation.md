@@ -26,8 +26,8 @@ If it prints version information, R is installed correctly.
 ### 2. Install RStudio Desktop
 
 1. Go to [https://posit.co/download/rstudio-desktop/](https://posit.co/download/rstudio-desktop/)
-2. Under **RStudio Desktop – Open Source Edition**, click **Download RStudio**
-3. The site will detect Windows automatically — download and run the `.exe` installer
+2. As you have already installed R, go to **2: Install RStudio**
+3. The site will detect Windows automatically — select your OS and download and run the `.exe` installer
 4. Follow the setup wizard with default settings
 5. Launch RStudio from the Start menu
 
