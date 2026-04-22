@@ -36,11 +36,6 @@ print("All good.")
 If it prints "All good." — the environment is ready.
 
 
-### Windows troubleshooting
-
-**R not found after installation**
-Close and reopen Command Prompt. If it still says "command not found", try restarting your computer.
-
 ---
 
 ## macOS
@@ -86,9 +81,6 @@ print("All good.")
 If it prints "All good." — the environment is ready.
 
 ### macOS troubleshooting
-
-**"xcrun: error: invalid active developer path"**
-macOS is asking you to install command-line tools. Run `xcode-select --install`, follow the prompt, then try again.
 
 **RStudio doesn't detect R**
 Go to **Tools → Global Options → General** and manually set the R version path (usually `/usr/local/bin/R` for Intel or `/opt/homebrew/bin/R` for Apple Silicon).
