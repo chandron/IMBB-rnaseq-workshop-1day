@@ -13,7 +13,7 @@ Choose your operating system and follow the instructions.
 
 1. Go to [https://cran.r-project.org/bin/windows/base/](https://cran.r-project.org/bin/windows/base/)
 2. Click **Download R x.x.x for Windows**
-3. Run the downloaded `.exe` file and follow the setup wizard — default settings are fine (you don't really need a Desktop icon for R, we suggest to uncheck this box)
+3. Run the downloaded `.exe` file and follow the setup wizard — default settings are fine
 
 Once the installation finishes, continue to Step 2. You will verify R is working from inside RStudio.
 
@@ -21,13 +21,13 @@ Once the installation finishes, continue to Step 2. You will verify R is working
 
 1. Go to [https://posit.co/download/rstudio-desktop/](https://posit.co/download/rstudio-desktop/)
 2. As you have already installed R, go to **2: Install RStudio**
-3. The site will detect Windows automatically — download and run the `.exe` installer
+3. The site will detect Windows automatically — select your OS and download and run the `.exe` installer
 4. Follow the setup wizard with default settings
 5. Launch RStudio from the Start menu
 
 ### 3. Verify installation
 
-Open RStudio. In the **Console** pane, paste the following and press Enter:
+Open RStudio. In the **Console** pane (bottom-left), paste the following and press Enter:
 
 ```r
 print("All good.")
@@ -35,6 +35,10 @@ print("All good.")
 
 If it prints "All good." — the environment is ready.
 
+### Windows troubleshooting
+
+**R not found after installation**
+Close and reopen Command Prompt. If it still says "command not found", try restarting your computer.
 
 ---
 
@@ -49,7 +53,7 @@ Go to [https://cran.r-project.org/bin/macosx/](https://cran.r-project.org/bin/ma
 - **Apple Silicon (M1/M2/M3/M4):** `R-x.x.x-arm64.pkg`
 - **Intel Mac:** `R-x.x.x-x86_64.pkg`
 
-Not sure which Mac you have? Click the Apple menu → About This Mac. If it says "Apple M1" or similar, it's Apple Silicon. If it says "Intel", it's Intel.
+  Not sure which Mac you have? Click the Apple menu → **About This Mac**. If it says "Apple M1" or similar, it's Apple Silicon. If it says "Intel", it's Intel.
 
 Open the `.pkg` file and follow the installation steps.
 
@@ -72,13 +76,21 @@ If it prints version information, R is installed correctly.
 
 ### 3. Verify installation
 
-Open RStudio. In the **Console** pane, paste the following and press Enter:
+Open RStudio. In the **Console** pane (bottom-left), paste the following and press Enter:
 
 ```r
 print("All good.")
 ```
 
 If it prints "All good." — the environment is ready.
+
+### macOS troubleshooting
+
+**"xcrun: error: invalid active developer path"**
+macOS is asking you to install command-line tools. Run `xcode-select --install`, follow the prompt, then try again.
+
+**RStudio doesn't detect R**
+Go to **Tools → Global Options → General** and manually set the R version path (usually `/usr/local/bin/R` for Intel or `/opt/homebrew/bin/R` for Apple Silicon).
 
 ---
 
@@ -107,13 +119,13 @@ If it prints version information, R is installed correctly.
 2. As you have already installed R, go to **2: Install RStudio**
 3. Select your Linux distribution and download the appropriate `.deb` package
 
-  Not sure which distribution you have? Run this in the Terminal:
-  
-  ```bash
-  cat /etc/os-release
-  ```
-  
-  Look for the `NAME` and `VERSION_ID` lines — for example, `Ubuntu 22.04` or `Ubuntu 24.04`. Use this to select the matching option on the RStudio download page.
+   Not sure which distribution you have? Run this in the Terminal:
+
+   ```bash
+   cat /etc/os-release
+   ```
+
+   Look for the `NAME` and `VERSION_ID` lines — for example, `Ubuntu 22.04` or `Ubuntu 24.04`. Use this to select the matching option on the RStudio download page.
 
 4. Install it from the Terminal (replace the filename with the one you downloaded):
 
@@ -127,7 +139,7 @@ sudo apt --fix-broken install
 
 ### 3. Verify installation
 
-Open RStudio. In the **Console** pane, paste the following and press Enter:
+Open RStudio. In the **Console** pane (bottom-left), paste the following and press Enter:
 
 ```r
 print("All good.")
@@ -148,11 +160,11 @@ R may be trying to install to a system directory. When prompted, type `yes` to i
 
 ---
 
-## 📧 Contact & Support
+## Still stuck?
 
-If you are encountering any installation issues, contact the Week 2 instructors before Week 2 starts.
+Email the Week 2 instructors before Week 2 starts so that they can help with any remaining setup issues.
 
 | Name | Email |
 |---|---|
-| Christos Andronis | ch.andronis@imbb.forth.gr |
-| Electra Tsaglioti | electra_tsaglioti@imbb.forth.gr |
+| Christos Andronis | |
+| Electra Tsaglioti | |
