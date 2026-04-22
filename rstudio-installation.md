@@ -107,14 +107,14 @@ If it prints version information, R is installed correctly.
 2. As you have already installed R, go to **2: Install RStudio**
 3. Select your Linux distribution and download the appropriate `.deb` package
 
-  _Not sure which distribution you have? Run this in the Terminal:
+  Not sure which distribution you have? Run this in the Terminal:
   
   ```bash
   cat /etc/os-release
   ```
   
   Look for the `NAME` and `VERSION_ID` lines — for example, `Ubuntu 22.04` or `Ubuntu 24.04`. Use this to select the matching option on the RStudio download page.
-_
+
 4. Install it from the Terminal (replace the filename with the one you downloaded):
 
 ```bash
