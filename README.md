@@ -34,7 +34,7 @@ A 2-hour workshop designed to empower wet-lab researchers who generate RNA-seq d
 | Topic 2 — QC & trimming + MultiQC walkthrough | 25 min |
 | Topic 3 — DE pipelines & report interpretation | 15 min |
 | Topic 4 — Functional enrichment concepts | 15 min |
-| Hands-on — Enrichment analysis with <a href="https://biit.cs.ut.ee/gprofiler/gost" target="_blank" rel="noopener noreferrer">g:Profiler</a> | 50 min |
+| Hands-on — Enrichment analysis with [g:Profiler](https://biit.cs.ut.ee/gprofiler/gost)| 50 min |
 | Wrap-up & discussion | 5 min |
 | **Total** | **120 min** |
 
