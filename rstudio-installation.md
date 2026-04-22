@@ -90,7 +90,6 @@ print("All good.")
 
 If it prints "All good." — the environment is ready.
 
-
 ### macOS troubleshooting
 
 **"xcrun: error: invalid active developer path"**
@@ -101,11 +100,68 @@ Go to **Tools → Global Options → General** and manually set the R version pa
 
 ---
 
+## Linux
+
+### 1. Install R
+
+Open a **Terminal** and run the following commands. These instructions are for Debian/Ubuntu-based distributions (e.g., Ubuntu, Linux Mint). For other distributions, see [https://cran.r-project.org/bin/linux/](https://cran.r-project.org/bin/linux/).
+
+```bash
+sudo apt update
+sudo apt install -y r-base
+```
+
+Verify:
+
+```bash
+R --version
+```
+
+If it prints version information, R is installed correctly.
+
+### 2. Install RStudio Desktop
+
+1. Go to [https://posit.co/download/rstudio-desktop/](https://posit.co/download/rstudio-desktop/)
+2. As you have already installed R, go to **2: Install RStudio**
+3. Select your Linux distribution and download the appropriate `.deb` package
+4. Install it from the Terminal (replace the filename with the one you downloaded):
+
+```bash
+cd ~/Downloads
+sudo dpkg -i rstudio-*.deb
+sudo apt --fix-broken install
+```
+
+5. Launch RStudio by typing `rstudio` in the Terminal, or find it in your applications menu
+
+### 3. Verify installation
+
+Open RStudio. In the **Console** pane (bottom-left), paste the following and press Enter:
+
+```r
+print("All good.")
+```
+
+If it prints "All good." — the environment is ready.
+
+### Linux troubleshooting
+
+**`dpkg` errors during installation**
+Run `sudo apt --fix-broken install` after the `dpkg` command — this resolves most missing dependency errors.
+
+**RStudio not found after installation**
+Try launching from the Terminal with `rstudio`. If the command is not found, reboot and try again.
+
+**Permission errors when installing packages in R**
+R may be trying to install to a system directory. When prompted, type `yes` to install to a personal library instead (usually `~/R/`).
+
+---
+
 ## Still stuck?
 
-Email the Week 2 instructors before Week 2 starts, so that they can help with any remaining setup issues.
+Email the Week 2 instructors before Week 2 starts so that they can help with any remaining setup issues.
 
-Contact information:
-
-Christos Andronis:
-Electra Tsaglioti:
+| Name | Email |
+|---|---|
+| Christos Andronis | |
+| Electra Tsaglioti | |
