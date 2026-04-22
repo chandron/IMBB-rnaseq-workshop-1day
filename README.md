@@ -22,6 +22,9 @@ A 2-hour hands-on workshop introducing bulk RNA-seq analysis to wet-lab biologis
 | `rnaseq_workshop_1day.Rmd` | R Markdown notebook — the main workshop document. Renders to HTML with floating TOC, code folding, and interactive tables. |
 | `InfluenzaAvsNonInfected_edgeR_up.txt` | Upregulated gene list (170 genes, padj < 0.05, \|log2FC\| ≥ 1) |
 | `InfluenzaAvsNonInfected_edgeR_down.txt` | Downregulated gene list (103 genes, padj < 0.05, \|log2FC\| ≥ 1) |
+| `multiqc_report.html` | multiqc report of raw fastq files. |
+| `GSM2545380_1_fastqc.html` | FastQC report from 1 of the raw fastq files. |
+| `student_cheatsheet.docx` | Cheatsheet doc with important conepts. |
 
 ## Session structure
 
