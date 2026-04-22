@@ -106,5 +106,6 @@ Go to **Tools → Global Options → General** and manually set the R version pa
 Email the Week 2 instructors before Week 2 starts, so that they can help with any remaining setup issues.
 
 Contact information:
+
 Christos Andronis:
 Electra Tsaglioti:
