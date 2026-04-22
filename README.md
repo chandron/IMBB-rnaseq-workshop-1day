@@ -34,7 +34,7 @@ A 2-hour hands-on workshop introducing bulk RNA-seq analysis to wet-lab biologis
 | Topic 2 — QC & trimming + MultiQC walkthrough | 25 min |
 | Topic 3 — DE pipelines & report interpretation | 15 min |
 | Topic 4 — Functional enrichment concepts | 15 min |
-| Hands-on — Enrichment analysis with g:Profiler | 50 min |
+| Hands-on — Enrichment analysis with [g:Profiler](https://biit.cs.ut.ee/gprofiler/gost) | 50 min |
 | Wrap-up & discussion | 5 min |
 | **Total** | **120 min** |
 
