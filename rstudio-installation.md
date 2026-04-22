@@ -160,9 +160,9 @@ R may be trying to install to a system directory. When prompted, type `yes` to i
 
 ---
 
-## Still stuck?
+## 📧 Contact & Support
 
-Email the Week 2 instructors before Week 2 starts so that they can help with any remaining setup issues.
+If you are stuck on any setup issues, email the Week 2 instructors before Week 2 starts, we are happy to help!
 
 | Name | Email |
 |---|---|
