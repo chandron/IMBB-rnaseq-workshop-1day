@@ -24,7 +24,7 @@ A 2-hour hands-on workshop introducing bulk RNA-seq analysis to wet-lab biologis
 | `InfluenzaAvsNonInfected_edgeR_down.txt` | Downregulated gene list (103 genes, padj < 0.05, \|log2FC\| ≥ 1) |
 | `multiqc_report.html` | multiqc report of raw fastq files. |
 | `GSM2545380_1_fastqc.html` | FastQC report from 1 of the raw fastq files. |
-| `student_cheatsheet.docx` | Cheatsheet doc with important conepts. |
+| `student_cheatsheet.docx` | Cheatsheet doc with important concepts. |
 
 ## Session structure
 
