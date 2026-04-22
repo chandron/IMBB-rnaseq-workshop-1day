@@ -74,8 +74,8 @@ If it prints version information, R is installed correctly.
 ### 2. Install RStudio Desktop
 
 1. Go to [https://posit.co/download/rstudio-desktop/](https://posit.co/download/rstudio-desktop/)
-2. Download the macOS `.dmg` file
-3. Open the `.dmg` and drag **RStudio** to your Applications folder
+2. As you have already installed R, go to **2: Install RStudio**
+3. The site will detect macOS automatically — select your OS and download and run the `.dmg` installer
 4. Launch RStudio from Applications or Spotlight (`Cmd+Space`, type "RStudio")
 
 > **Note:** On first launch, macOS may warn about an unidentified developer. If it does so, go to **System Settings → Privacy & Security** and click **Open Anyway**.
