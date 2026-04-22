@@ -15,13 +15,7 @@ Choose your operating system and follow the instructions.
 2. Click **Download R x.x.x for Windows**
 3. Run the downloaded `.exe` file and follow the setup wizard — default settings are fine (you don't really need a Desktop icon for R, we suggest to uncheck this box)
 
-Verify by opening **Command Prompt** (search "cmd" in the Start menu) and typing:
-
-```
-R --version
-```
-
-If it prints version information, R is installed correctly.
+Once the installation finishes, continue to Step 2. You will verify R is working from inside RStudio.
 
 ### 2. Install RStudio Desktop
 
