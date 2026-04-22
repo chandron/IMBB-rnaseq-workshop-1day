@@ -3,7 +3,7 @@
 **IMBB-FORTH Bioinformatics Unit**  
 Christos Andronis & Electra Tsaglioti
 
-A 2-hour workshop designed to empower wet-lab researchers who generate RNA-seq data to understand their results and engage confidently with bioinformaticians. Rather than teaching participants to run pipelines themselves, the workshop builds the conceptual vocabulary and practical literacy needed to interpret quality control reports, differential expression outputs, and functional enrichment analyses — so that the data they worked hard to generate becomes a conversation they can fully participate in.
+A 2-hour workshop designed to empower wet-lab researchers who generate RNA-seq data to understand their results and engage confidently with bioinformaticians. Rather than teaching participants to run pipelines themselves, the workshop builds the conceptual vocabulary and practical literacy needed to interpret quality control reports, differential expression outputs, and functional enrichment analyses - so that the data they worked hard to generate becomes a conversation they can fully participate in.
 
 ## Workshop dataset
 
