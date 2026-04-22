@@ -45,7 +45,6 @@ If it prints "All good." — the environment is ready.
 ### Windows troubleshooting
 
 **R not found after installation**
-
 Close and reopen Command Prompt. If it still says "command not found", try restarting your computer.
 
 ---
