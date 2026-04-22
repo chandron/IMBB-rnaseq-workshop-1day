@@ -80,11 +80,6 @@ print("All good.")
 
 If it prints "All good." — the environment is ready.
 
-### macOS troubleshooting
-
-**RStudio doesn't detect R**
-Go to **Tools → Global Options → General** and manually set the R version path (usually `/usr/local/bin/R` for Intel or `/opt/homebrew/bin/R` for Apple Silicon).
-
 ---
 
 ## Linux
