@@ -13,7 +13,7 @@ Choose your operating system and follow the instructions.
 
 1. Go to [https://cran.r-project.org/bin/windows/base/](https://cran.r-project.org/bin/windows/base/)
 2. Click **Download R x.x.x for Windows**
-3. Run the downloaded `.exe` file and follow the setup wizard — default settings are fine
+3. Run the downloaded `.exe` file and follow the setup wizard — default settings are fine (you don't really need a Desktop icon for R, we suggest to uncheck this box)
 
 Verify by opening **Command Prompt** (search "cmd" in the Start menu) and typing:
 
