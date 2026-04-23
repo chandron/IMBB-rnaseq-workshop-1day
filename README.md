@@ -23,7 +23,7 @@ A 2-hour workshop designed to empower wet-lab researchers who generate RNA-seq d
 | `rnaseq_workshop_1day.html` | The R Markdown notebook's rendered HTML. Either download to open or click [here](https://htmlpreview.github.io/?https://github.com/chandron/IMBB-rnaseq-workshop-1day/blob/main/rnaseq_workshop_1day.html).|
 | `InfluenzaAvsNonInfected_edgeR_up.txt` | Upregulated gene list (170 genes, padj < 0.05, \|log2FC\| ≥ 1) |
 | `InfluenzaAvsNonInfected_edgeR_down.txt` | Downregulated gene list (103 genes, padj < 0.05, \|log2FC\| ≥ 1) |
-| `multiqc_report.html` | multiqc report of raw fastq files. [here](https://htmlpreview.github.io/?https://github.com/chandron/IMBB-rnaseq-workshop-1day/blob/main/multiqc_report.html)|
+| `multiqc_report.html` | multiqc report of raw fastq files. |
 | `GSM2545380_1_fastqc.html` | FastQC report from 1 of the raw fastq files. |
 | `student_cheatsheet.docx` | Cheatsheet doc with important concepts. |
 
