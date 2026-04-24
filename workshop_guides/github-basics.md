@@ -42,7 +42,7 @@ IMBB-rnaseq-workshop-1day/
 │   ├── GSM2545380_1_fastqc.html     ← FastQC report — download to view
 │   ├── multiqc_report.html          ← MultiQC report — download to view
 │   ├── SARTools_report.html         ← SARTools report — download to view
-│   ├── student_cheatsheet.docx      ← A cheatsheet of important concepts — download to view
+│   ├── student_cheatsheet.docx      ← A Cheatsheet of important concepts — download to view
 │   ├── InfluenzaAvsNonInfected_edgeR_up.txt
 │   └── InfluenzaAvsNonInfected_edgeR_down.txt
 ├── workshop_guides/
