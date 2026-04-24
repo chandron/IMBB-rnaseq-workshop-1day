@@ -29,7 +29,7 @@ imbb-data-analysis/
 ├── week1/        ← notebooks for Week 1
 ├── precourse/    ← preparation notebooks
 ├── data/         ← datasets
-└── docs/         ← setup instructions (you are here)
+└── docs/         ← setup instructions
 ```
 
 And the RNA-seq session repository looks like this:
