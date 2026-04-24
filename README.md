@@ -17,7 +17,7 @@ New to GitHub? → Check out our brief [intro guide](https://github.com/chandron
 - **Platform:** Illumina HiSeq 2500, 100 bp paired-end reads
 - **Workshop subset:** Female mice only, Day 0 (non-infected) vs. Day 8 (post-infection), 8 samples total (4 per condition)
 
-## Repository contents - workshop_materials
+## Repository contents - The workshop materials
 
 | File | Description |
 |---|---|
