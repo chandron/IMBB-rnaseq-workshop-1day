@@ -45,12 +45,6 @@ New to GitHub? → Check out [github-basics.md](https://github.com/chandron/IMBB
 
 No coding experience is required. The workshop uses web-based tools (g:Profiler) for the hands-on activity.
 
-For participants who wish to run the optional R code sections in the notebook:
-
-```r
-install.packages(c("tidyverse", "gprofiler2", "DT"))
-```
-
 ## How to use
 
 1. Clone or download this repository
