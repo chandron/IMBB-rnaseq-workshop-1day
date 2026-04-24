@@ -45,7 +45,7 @@ IMBB-rnaseq-workshop-1day/
 │   └── InfluenzaAvsNonInfected_edgeR_down.txt
 ├── docs/
 │   ├── rstudio-installation.md
-│   └── github-basics.md <- you are here !
+│   └── github-basics.md             ← you are here !
 ├── LICENSE
 └── README.md
 ```
