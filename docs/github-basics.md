@@ -63,7 +63,7 @@ When you click on a file, GitHub shows you a preview. What you see depends on th
 | `.md` (Markdown) | ✅ Rendered — looks like a normal formatted page | `README.md`, `rstudio-installation.md` |
 | `.ipynb` (Jupyter notebook) | ✅ Rendered — shows the notebook with outputs | Week 1 notebooks |
 | `.txt` | ✅ Plain text — readable as-is | `InfluenzaAvsNonInfected_edgeR_up.txt` |
-| `.html` | ⚠️ **Raw HTML code** — not a rendered page | `rnaseq_workshop_1day.html`, `multiqc_report.html` |
+| `.html` | ⚠️ **Raw HTML code** — not a rendered page | `rnaseq_workshop_1day.html` |
 | `.rmd` (R Markdown) | ⚠️ **Raw code** — not a rendered page | `rnaseq_workshop_1day.Rmd` |
 | `.docx` (Word document) | ⚠️ **Not readable** — shows as garbled text | `student_cheatsheet.docx` |
 
