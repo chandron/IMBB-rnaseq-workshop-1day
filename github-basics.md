@@ -1,22 +1,28 @@
 # GitHub Basics
 ## IMBB Data Analysis Course
 
-This page explains just enough about GitHub to navigate the course repository. You do not need to create an account or learn to code with Git.
+This page explains just enough about GitHub to navigate the course repositories. You do not need to create an account or learn to code with Git.
 
 ---
 
 ## What is GitHub?
 
-GitHub is a website where code and files are stored and shared. Think of it as Google Drive for code. The course materials live in a **repository** (or "repo") — a folder that contains all the files for the course.
+GitHub is a website where code and files are stored and shared. Think of it as Google Drive for code. The course materials live in **repositories** (or "repos") — folders that contain all the files for each part of the course.
 
-The course repository is at:
-👉 [https://github.com/cgenomicslab/imbb-data-analysis](https://github.com/cgenomicslab/imbb-data-analysis)
+For example, some course repositories are:
+
+👉 **Week 1** — [https://github.com/cgenomicslab/imbb-data-analysis](https://github.com/cgenomicslab/imbb-data-analysis)
+
+👉 **Week 2 – RNA-seq session** — [https://github.com/chandron/IMBB-rnaseq-workshop-1day](https://github.com/chandron/IMBB-rnaseq-workshop-1day)
+
 
 ---
 
-## Navigating the repository
+## Navigating a repository
 
-When you open the repository page, you will see a list of folders and files. Click any folder to open it and see what's inside, just like browsing folders on your computer.
+When you open a repository page, you will see a list of folders and files. Click any folder to open it and see what's inside, just like browsing folders on your computer.
+
+For example, the Week 1 repository looks like this:
 
 ```
 imbb-data-analysis/
@@ -26,7 +32,20 @@ imbb-data-analysis/
 └── docs/         ← setup instructions (you are here)
 ```
 
-Click a folder name to open it. Use the folder path at the top (called a "breadcrumb") to navigate back.
+And the RNA-seq session repository looks like this:
+
+```
+IMBB-rnaseq-workshop-1day/
+├── rnaseq_workshop_1day.Rmd     ← main workshop document (R Markdown)
+├── rnaseq_workshop_1day.html    ← rendered version — download to view
+├── multiqc_report.html          ← QC report — download to view
+├── GSM2545380_1_fastqc.html     ← FastQC report — download to view
+├── student_cheatsheet.docx      ← cheatsheet — download to view
+├── InfluenzaAvsNonInfected_edgeR_up.txt
+└── InfluenzaAvsNonInfected_edgeR_down.txt
+```
+
+Click a folder or file name to open it. Use the folder path at the top (called a "breadcrumb") to navigate back.
 
 ---
 
@@ -34,16 +53,17 @@ Click a folder name to open it. Use the folder path at the top (called a "breadc
 
 When you click on a file, GitHub shows you a preview. What you see depends on the file type:
 
-| File type | What you see on GitHub |
-|---|---|
-| `.md` (Markdown) | ✅ Rendered — looks like a normal formatted page |
-| `.ipynb` (Jupyter notebook) | ✅ Rendered — shows the notebook with outputs |
-| `.html` | ⚠️ **Raw HTML code** — not a rendered page |
-| `.rmd` (R Markdown) | ⚠️ **Raw code** — not a rendered page |
-| `.docx` (Word document) | ⚠️ **Not readable** — shows as garbled text |
-| `.py`, `.r`, `.csv` | Raw text — the file contents as plain text |
+| File type | What you see on GitHub | Example in this course |
+|---|---|---|
+| `.md` (Markdown) | ✅ Rendered — looks like a normal formatted page | `README.md`, `rstudio-installation.md` |
+| `.ipynb` (Jupyter notebook) | ✅ Rendered — shows the notebook with outputs | Week 1 notebooks |
+| `.txt` | ✅ Plain text — readable as-is | `InfluenzaAvsNonInfected_edgeR_up.txt` |
+| `.html` | ⚠️ **Raw HTML code** — not a rendered page | `rnaseq_workshop_1day.html`, `multiqc_report.html` |
+| `.rmd` (R Markdown) | ⚠️ **Raw code** — not a rendered page | `rnaseq_workshop_1day.Rmd` |
+| `.docx` (Word document) | ⚠️ **Not readable** — shows as garbled text | `student_cheatsheet.docx` |
+| `.py`, `.r`, `.csv` | Raw text — the file contents as plain text | — |
 
-> ⚠️ **Important:** `.html`, `.rmd`, and `.docx` files do not display properly in GitHub. `.html` and `.rmd` show as raw code; `.docx` shows as garbled text. To view any of these properly, download the file first and open it on your computer (see below).
+> ⚠️ **Important:** `.html`, `.rmd`, and `.docx` files do not display properly on GitHub. `.html` and `.rmd` show as raw code; `.docx` shows as garbled text. To view any of these properly, you need to **download them first** and open them on your computer (see below).
 
 ---
 
@@ -55,9 +75,11 @@ When you click on a file, GitHub shows you a preview. What you see depends on th
 2. Look for the **download icon** (⬇) in the top-right corner of the file preview and click it
 3. The file will be saved to your Downloads folder
 
+Then open it normally — `.html` files open in your browser, `.docx` files open in Word.
+
 ### Download everything at once
 
-To get all course materials in one go:
+To get all materials from a repository in one go:
 
 1. Go to the main repository page
 2. Click the green **Code** button (top-right of the file list)
@@ -76,4 +98,4 @@ The simplest fix: **download the ZIP again** and replace the old folder. As long
 
 ## That's it
 
-You don't need to know anything else about Git or GitHub for this course. If the instructors refer to "the repo", they mean the repository link above.
+You don't need to know anything else about Git or GitHub for this course. If the instructors refer to "the repo", they mean one of the repository links at the top of this page.
