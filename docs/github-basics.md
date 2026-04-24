@@ -36,13 +36,18 @@ And the RNA-seq session repository looks like this:
 
 ```
 IMBB-rnaseq-workshop-1day/
-├── rnaseq_workshop_1day.Rmd     ← main workshop document (R Markdown)
-├── rnaseq_workshop_1day.html    ← rendered version — download to view
-├── multiqc_report.html          ← QC report — download to view
-├── GSM2545380_1_fastqc.html     ← FastQC report — download to view
-├── student_cheatsheet.docx      ← cheatsheet — download to view
-├── InfluenzaAvsNonInfected_edgeR_up.txt
-└── InfluenzaAvsNonInfected_edgeR_down.txt
+├── data/
+│   ├── rnaseq_workshop_1day.Rmd     ← main workshop document (R Markdown)
+│   ├── rnaseq_workshop_1day.html    ← rendered version — download to view
+│   ├── multiqc_report.html          ← QC report — download to view
+│   ├── GSM2545380_1_fastqc.html     ← FastQC report — download to view
+│   ├── InfluenzaAvsNonInfected_edgeR_up.txt
+│   └── InfluenzaAvsNonInfected_edgeR_down.txt
+├── docs/
+│   ├── rstudio-installation.md
+│   └── github-basics.md <- you are here !
+├── LICENSE
+└── README.md
 ```
 
 Click a folder or file name to open it. Use the folder path at the top (called a "breadcrumb") to navigate back.
