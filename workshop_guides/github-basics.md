@@ -36,13 +36,18 @@ And the RNA-seq session repository looks like this:
 
 ```
 IMBB-rnaseq-workshop-1day/
-├── rnaseq_workshop_1day.Rmd     ← main workshop document (R Markdown)
-├── rnaseq_workshop_1day.html    ← rendered version — download to view
-├── multiqc_report.html          ← QC report — download to view
-├── GSM2545380_1_fastqc.html     ← FastQC report — download to view
-├── student_cheatsheet.docx      ← cheatsheet — download to view
-├── InfluenzaAvsNonInfected_edgeR_up.txt
-└── InfluenzaAvsNonInfected_edgeR_down.txt
+├── data/
+│   ├── rnaseq_workshop_1day.Rmd     ← main workshop document (R Markdown)
+│   ├── rnaseq_workshop_1day.html    ← rendered version — download to view
+│   ├── multiqc_report.html          ← MultiQC report — download to view
+│   ├── GSM2545380_1_fastqc.html     ← FastQC report — download to view
+│   ├── InfluenzaAvsNonInfected_edgeR_up.txt
+│   └── InfluenzaAvsNonInfected_edgeR_down.txt
+├── docs/
+│   ├── rstudio-installation.md
+│   └── github-basics.md             ← you are here!
+├── LICENSE
+└── README.md
 ```
 
 Click a folder or file name to open it. Use the folder path at the top (called a "breadcrumb") to navigate back.
@@ -58,10 +63,9 @@ When you click on a file, GitHub shows you a preview. What you see depends on th
 | `.md` (Markdown) | ✅ Rendered — looks like a normal formatted page | `README.md`, `rstudio-installation.md` |
 | `.ipynb` (Jupyter notebook) | ✅ Rendered — shows the notebook with outputs | Week 1 notebooks |
 | `.txt` | ✅ Plain text — readable as-is | `InfluenzaAvsNonInfected_edgeR_up.txt` |
-| `.html` | ⚠️ **Raw HTML code** — not a rendered page | `rnaseq_workshop_1day.html`, `multiqc_report.html` |
+| `.html` | ⚠️ **Raw HTML code** — not a rendered page | `rnaseq_workshop_1day.html` |
 | `.rmd` (R Markdown) | ⚠️ **Raw code** — not a rendered page | `rnaseq_workshop_1day.Rmd` |
 | `.docx` (Word document) | ⚠️ **Not readable** — shows as garbled text | `student_cheatsheet.docx` |
-| `.py`, `.r`, `.csv` | Raw text — the file contents as plain text | — |
 
 > ⚠️ **Important:** `.html`, `.rmd`, and `.docx` files do not display properly on GitHub. `.html` and `.rmd` show as raw code; `.docx` shows as garbled text. To view any of these properly, you need to **download them first** and open them on your computer (see below).
 
@@ -96,6 +100,6 @@ The simplest fix: **download the ZIP again** and replace the old folder. As long
 
 ---
 
-## That's it
+## 🎉 That's it
 
 You don't need to know anything else about Git or GitHub for this course.
