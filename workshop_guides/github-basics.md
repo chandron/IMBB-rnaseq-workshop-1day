@@ -36,14 +36,16 @@ And the RNA-seq session repository looks like this:
 
 ```
 IMBB-rnaseq-workshop-1day/
-├── data/
-│   ├── rnaseq_workshop_1day.Rmd     ← main workshop document (R Markdown)
+├── workshop_materials/
+│   ├── rnaseq_workshop_1day.Rmd     ← main workshop document (R Markdown - must be "Knit" in Rstudio, or you can use the rendered version)
 │   ├── rnaseq_workshop_1day.html    ← rendered version — download to view
-│   ├── multiqc_report.html          ← MultiQC report — download to view
 │   ├── GSM2545380_1_fastqc.html     ← FastQC report — download to view
+│   ├── multiqc_report.html          ← MultiQC report — download to view
+│   ├── SARTools_report.html         ← SARTools report — download to view
+│   ├── student_cheatsheet.docx      ← A cheatsheet of important concepts — download to view
 │   ├── InfluenzaAvsNonInfected_edgeR_up.txt
 │   └── InfluenzaAvsNonInfected_edgeR_down.txt
-├── docs/
+├── workshop_guides/
 │   ├── rstudio-installation.md
 │   └── github-basics.md             ← you are here!
 ├── LICENSE
