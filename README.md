@@ -5,7 +5,7 @@ Christos Andronis & Electra Tsaglioti
 
 A 2-hour workshop designed to empower wet-lab researchers who generate RNA-seq data to understand their results and engage confidently with bioinformaticians. Rather than teaching participants to run pipelines themselves, the workshop builds the conceptual vocabulary and practical literacy needed to interpret quality control reports, differential expression outputs, and functional enrichment analyses - so that the data they worked hard to generate becomes a conversation they can fully participate in.
 
-New to GitHub? → Check out [github-basics.md](https://github.com/chandron/IMBB-rnaseq-workshop-1day/blob/main/docs/github-basics.md)
+New to GitHub? → Check out our brief [intro guide](https://github.com/chandron/IMBB-rnaseq-workshop-1day/blob/main/docs/github-basics.md)
 
 ## Workshop dataset
 
