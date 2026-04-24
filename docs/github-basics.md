@@ -66,7 +66,6 @@ When you click on a file, GitHub shows you a preview. What you see depends on th
 | `.html` | ⚠️ **Raw HTML code** — not a rendered page | `rnaseq_workshop_1day.html`, `multiqc_report.html` |
 | `.rmd` (R Markdown) | ⚠️ **Raw code** — not a rendered page | `rnaseq_workshop_1day.Rmd` |
 | `.docx` (Word document) | ⚠️ **Not readable** — shows as garbled text | `student_cheatsheet.docx` |
-| `.py`, `.r`, `.csv` | Raw text — the file contents as plain text | — |
 
 > ⚠️ **Important:** `.html`, `.rmd`, and `.docx` files do not display properly on GitHub. `.html` and `.rmd` show as raw code; `.docx` shows as garbled text. To view any of these properly, you need to **download them first** and open them on your computer (see below).
 
