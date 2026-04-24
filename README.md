@@ -17,16 +17,17 @@ New to GitHub? → Check out our brief [intro guide](https://github.com/chandron
 - **Platform:** Illumina HiSeq 2500, 100 bp paired-end reads
 - **Workshop subset:** Female mice only, Day 0 (non-infected) vs. Day 8 (post-infection), 8 samples total (4 per condition)
 
-## Repository contents
+## Repository contents - workshop_materials
 
 | File | Description |
 |---|---|
 | `rnaseq_workshop_1day.Rmd` | R Markdown notebook — the main workshop document. Renders to HTML with floating TOC, code folding, and interactive tables. |
-| `rnaseq_workshop_1day.html` | The R Markdown notebook's rendered HTML. Either download to open or click [here](https://htmlpreview.github.io/?https://github.com/chandron/IMBB-rnaseq-workshop-1day/blob/main/data/rnaseq_workshop_1day.html).|
+| `rnaseq_workshop_1day.html` | The R Markdown notebook's rendered HTML. |
 | `InfluenzaAvsNonInfected_edgeR_up.txt` | Upregulated gene list (170 genes, padj < 0.05, \|log2FC\| ≥ 1) |
 | `InfluenzaAvsNonInfected_edgeR_down.txt` | Downregulated gene list (103 genes, padj < 0.05, \|log2FC\| ≥ 1) |
-| `multiqc_report.html` | multiqc report of raw fastq files. |
-| `GSM2545380_1_fastqc.html` | FastQC report from 1 of the raw fastq files. |
+| `GSM2545380_1_fastqc.html` | A FastQC report from 1 of the raw fastq files. |
+| `multiqc_report.html` | A Multiqc report combining the FastQC reports of all files. |
+| `SARTools_report.html` | The SARTools report of the DE analysis. |
 | `student_cheatsheet.docx` | Cheatsheet doc with important concepts. |
 
 ## Session structure
@@ -43,7 +44,7 @@ New to GitHub? → Check out our brief [intro guide](https://github.com/chandron
 
 ## Prerequisites
 
-No coding experience is required. The workshop uses web-based tools (g:Profiler) for the hands-on activity.
+No coding experience is required. The workshop uses web-based tools [g:Profiler](https://biit.cs.ut.ee/gprofiler/gost) for the hands-on activity.
 
 ## How to use
 
