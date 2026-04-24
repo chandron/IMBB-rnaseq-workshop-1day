@@ -44,7 +44,7 @@ New to GitHub? → Check out our brief [intro guide](https://github.com/chandron
 
 ## Prerequisites
 
-No coding experience is required. The workshop uses web-based tools [g:Profiler](https://biit.cs.ut.ee/gprofiler/gost) for the hands-on activity.
+No coding experience is required. The workshop uses web-based tools [(g:Profiler)](https://biit.cs.ut.ee/gprofiler/gost) for the hands-on activity.
 
 ## How to use
 
