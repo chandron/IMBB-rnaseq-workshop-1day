@@ -1,7 +1,7 @@
 # GitHub Basics
 ## IMBB Data Analysis Course
 
-This page explains just enough about GitHub to navigate the course repositories. You do not need to create an account or learn to code with Git.
+This page explains just enough about GitHub to navigate the course repositories.
 
 ---
 
