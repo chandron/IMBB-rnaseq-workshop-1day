@@ -39,7 +39,7 @@ IMBB-rnaseq-workshop-1day/
 ├── data/
 │   ├── rnaseq_workshop_1day.Rmd     ← main workshop document (R Markdown)
 │   ├── rnaseq_workshop_1day.html    ← rendered version — download to view
-│   ├── multiqc_report.html          ← QC report — download to view
+│   ├── multiqc_report.html          ← MultiQC report — download to view
 │   ├── GSM2545380_1_fastqc.html     ← FastQC report — download to view
 │   ├── InfluenzaAvsNonInfected_edgeR_up.txt
 │   └── InfluenzaAvsNonInfected_edgeR_down.txt
