@@ -100,6 +100,6 @@ The simplest fix: **download the ZIP again** and replace the old folder. As long
 
 ---
 
-## That's it
+## 🎉 That's it
 
 You don't need to know anything else about Git or GitHub for this course.
