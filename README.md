@@ -27,7 +27,7 @@ New to GitHub? → Check out our brief [intro guide](https://github.com/chandron
 | `InfluenzaAvsNonInfected_edgeR_down.txt` | Downregulated gene list (103 genes, padj < 0.05, \|log2FC\| ≥ 1) |
 | `GSM2545380_1_fastqc.html` | A FastQC report from 1 of the raw fastq files. |
 | `multiqc_report.html` | A MultiQC report combining the FastQC reports of all files. |
-| `SARTools_report.html` | The SARTools report of the DE analysis. |
+| `SARTools_report.html` | A SARTools report of a DE analysis. |
 | `student_cheatsheet.docx` | Cheatsheet doc with important concepts. |
 
 ## Session structure
