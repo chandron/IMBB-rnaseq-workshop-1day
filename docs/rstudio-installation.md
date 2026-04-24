@@ -13,7 +13,7 @@ Choose your operating system and follow the instructions.
 
 1. Go to [https://cran.r-project.org/bin/windows/base/](https://cran.r-project.org/bin/windows/base/)
 2. Click **Download R x.x.x for Windows**
-3. Run the downloaded `.exe` file and follow the setup wizard — default settings are fine
+3. Run the downloaded `.exe` file and follow the setup wizard — default settings are fine (an R desktop icon is not really necessary)
 
 Once the installation finishes, continue to Step 2. You will verify R is working from inside RStudio.
 
@@ -50,7 +50,7 @@ Go to [https://cran.r-project.org/bin/macosx/](https://cran.r-project.org/bin/ma
 
   Not sure which Mac you have? Click the Apple menu → **About This Mac**. If it says "Apple M1" or similar, it's Apple Silicon. If it says "Intel", it's Intel.
 
-Open the `.pkg` file and follow the installation steps.
+Open the `.pkg` file and follow the installation steps. 
 
 Verify in Terminal:
 
