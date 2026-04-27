@@ -1,0 +1,588 @@
+---
+title: "RNA-seq for Wet-Lab Biologists — Workshop Notebook"
+subtitle: "IMBB-FORTH Bioinformatics Unit"
+author: "Christos Andronis & Electra Tsaglioti, IMBB Bioinformatics Unit, IMBB-FORTH Research Institute"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    toc: true
+    toc_depth: 3
+    toc_float:
+      collapsed: false
+      smooth_scroll: true
+    number_sections: true
+    theme: flatly
+    highlight: tango
+    code_folding: show
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo       = TRUE,
+  eval       = FALSE,
+  message    = FALSE,
+  warning    = FALSE,
+  fig.align  = "center",
+  fig.width  = 8,
+  fig.height = 5
+)
+```
+
+------------------------------------------------------------------------
+
+# Workshop Overview {.unnumbered}
+
+> **Format:** 1 session × 2 hours\
+> **Audience:** Wet-lab biologists (MSc/PhD students, post-docs) with little to no coding experience\
+> **Tools:** Web-based tools preferred; light bash/R as optional tracks\
+> **Scope:** Eukaryotic organisms (primarily human and mouse, but applicable to other eukaryotes)
+
+> ⚠️ **Scope note:** The workflows, tools, reference databases, and examples described in this workshop are intended for eukaryotic organisms. Key assumptions — such as the use of spliced alignment, standard genome annotation formats, and GO/KEGG/Reactome pathway databases — may not apply directly to prokaryotic RNA-seq experiments, which require different alignment strategies, annotation resources, and analysis considerations.
+
+### Session structure {.unnumbered}
+
+| Segment                                          | Duration   |
+|--------------------------------------------------|------------|
+| Topic 1 — RNA-seq workflow schematic             | 10 min     |
+| Topic 2 — QC & trimming + MultiQC walkthrough    | 25 min     |
+| Topic 3 — DE pipelines & report interpretation   | 15 min     |
+| Topic 4 — Functional enrichment concepts         | 15 min     |
+| Hands-on activity — g:Profiler                   | 50 min     |
+| Wrap-up & discussion                             | 5 min      |
+| **Total**                                        | **120 min**|
+
+### Workshop dataset {.unnumbered}
+
+Throughout this workshop we use dataset [GSE96870](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE96870) — *"The effect of upper-respiratory infection on transcriptomic changes in the CNS"*. C57BL/6 mice were inoculated intranasally with saline or Influenza A (PR8 strain) and the cerebellum was profiled by RNA-seq (Illumina HiSeq 2500, 100 bp paired-end reads) at days 0, 4, and 8 post-infection.
+
+For this workshop we use a subset: **female mice only, Day 0 (non-infected) vs. Day 8 (Influenza A)**, 4 replicates per condition, **8 samples total**.
+
+### Prerequisites {.unnumbered}
+
+No coding experience is required. The R code sections in this notebook are **optional** companion demonstrations — the workshop itself uses web-based tools. For participants who wish to explore the R code:
+
+```{r install-packages, eval=FALSE}
+# Optional — only needed if you want to run the R code sections
+install.packages(c("tidyverse"))
+
+```
+
+------------------------------------------------------------------------
+
+# Topic 1 — The Bulk RNA-seq Analysis Workflow: A Schematic Overview
+
+Before diving into individual steps, participants need a mental map of the full journey from sequencer output to differential expression results. This section provides a concise schematic — not a hands-on tutorial — so that every subsequent topic has a clear place in the bigger picture.
+
+## The workflow at a glance
+
+```
+Raw reads (FASTQ)
+      │
+      ▼
+Quality Assessment (FastQC / MultiQC)
+      │
+      ▼
+Adapter & Quality Trimming (Trimmomatic / Trim Galore / fastp / BBDuk)
+      │
+      ▼
+Alignment to Reference Genome (STAR / HISAT2)
+   — or —
+Pseudo-alignment / Quasi-mapping (Salmon / kallisto)
+      │
+      ▼
+Quantification → Count Matrix
+(featureCounts / HTSeq / Salmon quant)
+      │
+      ▼
+Differential Expression Analysis
+(DESeq2 / edgeR / SARTools / nf-core/differentialabundance)
+      │
+      ▼
+Functional Enrichment & Visualization
+```
+
+## Key points
+
+- Each step transforms data: FASTQ → aligned BAM → count matrix → DEG list
+- The **count matrix** is the key handoff point: everything upstream is largely computational; everything downstream is where biological interpretation happens
+- Alignment-based vs. quasi-mapping: alignment-based (STAR + featureCounts) is the traditional route; quasi-mapping (Salmon, kallisto) is faster and increasingly preferred
+- Reference genome and annotation versions matter — always record exactly which versions were used
+
+### What does a count matrix look like? {.unnumbered}
+
+```{r count-matrix-example, eval=TRUE, echo=FALSE}
+# Example count matrix using genes relevant to the workshop dataset
+count_example <- data.frame(
+  Gene             = c("Irf7", "Bst2", "Gbp4", "Plp1", "Opalin", "Gapdh"),
+  NonInfected_F1   = c(45, 120, 30, 8500, 5200, 14200),
+  NonInfected_F2   = c(52, 135, 28, 8100, 4900, 13800),
+  NonInfected_F3   = c(40, 110, 35, 8700, 5400, 14500),
+  NonInfected_F4   = c(48, 125, 32, 8300, 5100, 14000),
+  InfluenzaA_F1    = c(890, 1450, 620, 3200, 1800, 13900),
+  InfluenzaA_F2    = c(920, 1380, 580, 3500, 1950, 14100),
+  InfluenzaA_F3    = c(860, 1520, 650, 3100, 1700, 13700),
+  InfluenzaA_F4    = c(950, 1400, 610, 3400, 1850, 14300)
+)
+knitr::kable(count_example, caption = "Example count matrix — rows are genes, columns are samples, values are read counts. Irf7, Bst2, and Gbp4 are upregulated upon Influenza A infection; Plp1 and Opalin (myelin markers) are downregulated; Gapdh remains stable.")
+```
+
+> **Key take-away:** The computational pipeline transforms millions of short reads into a structured count matrix, which then feeds into statistical tools for identifying differentially expressed genes.
+
+------------------------------------------------------------------------
+
+# Topic 2 — Quality Assessment & Trimming
+
+Before any analysis, it is essential to assess the quality of raw sequencing reads. Poor quality bases, adapter contamination, or unexpected GC content can introduce systematic biases. FastQC and MultiQC are the standard tools; understanding how to interpret their output is a key practical skill for any biologist who collaborates with a bioinformatics facility.
+
+## FastQC: Key Modules
+
+[FastQC](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/) analyses a FASTQ file and produces a per-sample QC report. The most important modules for RNA-seq are:
+
+| Module | What it shows | What to look for |
+|---|---|---|
+| **Per-base sequence quality** | Phred score at each position along the read | Scores should stay above Q28–30; degradation at 3′ end is normal |
+| **Per-sequence quality scores** | Distribution of mean quality per read | Should peak sharply at high values |
+| **Per-base sequence content** | A/T/G/C proportion at each position | First ~10 bases may show bias (random priming artefact); otherwise should be flat |
+| **GC content distribution** | GC% distribution across reads | Should follow a bell curve near the organism's expected GC%; sharp peaks suggest contamination |
+| **Sequence duplication levels** | How often identical reads appear | Some duplication is expected in RNA-seq; extreme levels may indicate library issues |
+| **Adapter content** | Presence of sequencing adapter sequences | Any adapter signal = trimming required before alignment |
+| **Overrepresented sequences** | Reads appearing far more than expected | Often adapters or rRNA contamination |
+
+## Interpreting GC Content
+
+GC content is one of the most informative — and misunderstood — QC metrics:
+
+- Each organism has a characteristic GC content (~41% for human, ~51% for *E. coli*)
+- In RNA-seq, the distribution reflects the **transcriptome** — highly expressed genes contribute disproportionately
+- A **normal distribution** centred near the organism's expected GC% = healthy library
+- A **sharp narrow peak** = possible adapter dimers or contamination with a single dominant sequence
+- A **bimodal distribution** = likely contamination with a second organism or rRNA carryover
+- **Systematic GC bias** can occur due to PCR amplification during library preparation
+
+## Why Trim?
+
+Trimming removes low-quality bases and adapter sequences before alignment:
+
+- Adapter sequences are artefacts of library preparation and will prevent reads from aligning correctly
+- Low-quality bases (typically at the 3′ end) can cause misalignments
+- Very short reads after trimming are uninformative and should be discarded
+
+> **Note:** Modern quasi-mapping tools (Salmon, kallisto) are more tolerant of low-quality bases, and some workflows skip trimming when using them. Trimming remains best practice for alignment-based workflows.
+
+**Common trimming tools:**
+
+| Tool | Description |
+|---|---|
+| [Trim Galore](https://www.bioinformatics.babraham.ac.uk/projects/trim_galore/) | Wrapper around Cutadapt + FastQC |
+| [fastp](https://github.com/OpenGene/fastp) | Very fast, auto-detects adapters, generates QC |
+| [BBDuk](https://jgi.doe.gov/data-and-tools/software-tools/bbtools/bb-tools-user-guide/bbduk-guide/) | Part of BBTools suite, flexible kmer filtering |
+| [Trimmomatic](http://www.usadellab.org/cms/?page=trimmomatic) | Widely used, highly configurable |
+
+## MultiQC: Reading an Aggregated QC Report
+
+[MultiQC](https://multiqc.info/) aggregates FastQC outputs across all samples into a single interactive HTML report — essential when working with datasets of 10–100+ samples.
+
+**Key sections to interpret:**
+
+- **General statistics table:** at-a-glance overview of total reads, % duplicates, % GC, and % adapter content per sample — outlier samples are immediately visible
+- **Sequence quality heatmap:** quality per position across all samples simultaneously; rapid identification of samples with degraded 3′ quality
+- **GC content overlay:** all samples plotted together; samples deviating from the expected distribution stand out clearly
+- **Adapter content panel:** shows which samples require trimming and how much adapter is present
+- **Duplication levels:** compare across samples; large differences may indicate unequal library complexity
+
+### Guided MultiQC walkthrough {.unnumbered}
+
+> **Dataset:** [GSE96870](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE96870) — mouse cerebellum, C57BL/6 mice, Influenza A (PR8) vs. saline, Illumina HiSeq 2500. Workshop subset: female mice, Day 0 vs. Day 8, 8 samples. A pre-loaded MultiQC report will be provided by the instructors.
+
+Follow this checklist with the class:
+
+1. Open the **General Statistics** table — sort by % GC, M Reads, and % Dups in turn; identify any outlier sample
+2. Navigate to **Per Base Sequence Quality** — do all samples show the expected 3′ degradation pattern, or are any failing across their full length?
+3. Navigate to **Per Sequence GC Content** — does the distribution centre near the expected value for mouse (~45%)? Are there any bimodal distributions?
+4. Navigate to **Adapter Content** — do any samples show significant adapter contamination requiring trimming?
+5. As a group, decide: which samples (if any) would you flag or exclude before proceeding to alignment?
+
+> 💬 **Discussion:** What would you do if one of eight samples showed markedly lower read counts or higher adapter contamination than the others? Would you trim and keep it, or exclude it?
+
+> ✅ **Key takeaway:** A MultiQC report tells you the biological quality of your experiment before any analysis begins. QC is not a technical checkbox — it is the first point at which problems in library preparation or sample handling become visible.
+
+------------------------------------------------------------------------
+
+# Topic 3 — Differential Expression Analysis & Report Interpretation *(abbreviated)*
+
+A brief overview of the DE analysis landscape — sufficient to understand where a count matrix goes, which tools process it, and how to read the key diagnostic plots in a results report.
+
+## The Statistical Framework
+
+RNA-seq counts are non-negative integers, overdispersed (variance > mean), and highly variable at low counts. Both **DESeq2** and **edgeR** address this using a **Negative Binomial distribution**, borrowing information across genes to estimate dispersion reliably even with few replicates (3–5 per group).
+
+## Wrapper Pipelines
+
+Rather than scripting DE analysis directly in R, wrapper pipelines standardise and automate the full workflow from count matrix to results report:
+
+- **[SARTools](https://github.com/PF2-pasteur-fr/SARTools)** — R-based; generates a comprehensive HTML/PDF report. **Standard pipeline at the IMBB-FORTH Bioinformatics Facility.**
+- **[nf-core/differentialabundance](https://nf-co.re/differentialabundance)** — Nextflow-based; wraps DESeq2; designed for HPC/cloud reproducibility.
+
+## Key Plots in a DE Report
+
+| Plot | What it shows | What to look for |
+|---|---|---|
+| **PCA plot** | Sample relationships in 2D | Conditions should separate on PC1; outliers or batch effects visible on PC2 |
+| **Clustering heatmap** | Sample-to-sample distances | Samples should cluster by condition; cross-condition clustering = possible swap or outlier |
+| **p-value histogram** | Distribution of raw p-values | Spike near 0 over a flat background = genuine DE signal |
+| **MA plot** | Fold change vs. mean expression | Non-significant genes centred on log2FC = 0; significant genes highlighted |
+| **Volcano plot** | Fold change vs. significance | Top-right = strongly upregulated; top-left = strongly downregulated |
+
+**Standard filtering thresholds:** padj < 0.05 and |log2FC| ≥ 1 (2-fold change) — though thresholds should always reflect biological context. Stricter thresholds (e.g., |log2FC| ≥ 2 for 4-fold change) can be used to focus on the most strongly affected genes.
+
+### Optional R demonstration: simulated volcano plot {.unnumbered}
+
+```{r volcano-plot}
+library(tidyverse)
+
+# Simulated DE results for demonstration purposes
+set.seed(42)
+n_genes <- 5000
+de_results <- tibble(
+  gene_id        = paste0("Gene_", 1:n_genes),
+  log2FoldChange = rnorm(n_genes, mean = 0, sd = 1.5),
+  padj           = 10^(-abs(rnorm(n_genes, mean = 0, sd = 3)))
+)
+
+# Classify genes using the thresholds applied in this workshop
+de_results <- de_results %>%
+  mutate(
+    significance = case_when(
+      padj < 0.05 & abs(log2FoldChange) >= 1 ~ "Significant (padj<0.05 & |log2FC|≥1)",
+      padj < 0.05                             ~ "padj < 0.05 only",
+      TRUE                                    ~ "Not significant"
+    )
+  )
+
+ggplot(de_results, aes(x = log2FoldChange, y = -log10(padj), colour = significance)) +
+  geom_point(alpha = 0.4, size = 1) +
+  scale_colour_manual(values = c(
+    "Significant (padj<0.05 & |log2FC|≥1)" = "#D73027",
+    "padj < 0.05 only"                     = "#FEE08B",
+    "Not significant"                      = "grey75"
+  )) +
+  geom_hline(yintercept = -log10(0.05), linetype = "dashed", colour = "grey40") +
+  geom_vline(xintercept = c(-1, 1), linetype = "dashed", colour = "grey40") +
+  labs(
+    title  = "Volcano Plot — Differential Expression Results",
+    x      = expression(log[2]~"Fold Change"),
+    y      = expression(-log[10]~"Adjusted p-value"),
+    colour = NULL
+  ) +
+  theme_minimal(base_size = 13) +
+  theme(legend.position = "bottom")
+```
+
+**Key references:**
+
+- Love MI, Huber W, Anders S. DESeq2. *Genome Biology* 15, 550 (2014). <https://doi.org/10.1186/s13059-014-0550-8>
+- Robinson MD, McCarthy DJ, Smyth GK. edgeR. *Bioinformatics* 26(1), 139–140 (2010). <https://doi.org/10.1093/bioinformatics/btp616>
+- Varet H et al. SARTools. *PLOS ONE* 11(6), e0157022 (2016). <https://doi.org/10.1371/journal.pone.0157022>
+
+------------------------------------------------------------------------
+
+# Topic 4 — Functional Enrichment & Pathway Analysis
+
+A list of hundreds of differentially expressed genes is not itself a biological conclusion. Functional enrichment analysis asks whether certain biological functions, pathways, or processes are over-represented in a gene list — transforming a statistical result into biological insight.
+
+## Key Concepts
+
+**What enrichment analysis does:** Given a background of all genes measured in an experiment, it asks whether your gene list contains significantly more genes from a particular biological category than expected at random.
+
+### Key databases {.unnumbered}
+
+| Database | Focus |
+|---|---|
+| **Gene Ontology (GO)** | Biological Process, Molecular Function, Cellular Component — hierarchical, from broad to specific |
+| **KEGG** | Metabolic and signalling pathways with curated diagrams |
+| **Reactome** | Manually curated, detailed human pathway maps |
+| **MSigDB** | Curated gene sets including hallmark gene sets; used primarily with GSEA |
+
+## Two main approaches
+
+**Over-Representation Analysis (ORA):** You supply a list of significant genes (e.g., padj < 0.05 and |log2FC| ≥ 1); a Fisher's Exact or hypergeometric test asks which GO terms or pathways appear more than expected given the background. Simple, widely used, and the focus of today's hands-on exercise.
+
+**GSEA:** Uses the entire ranked gene list — no threshold required. Detects coordinated shifts in expression across a gene set. Better statistical power for pathway-level effects, but requires more setup.
+
+## Critical considerations
+
+> ⚠️ Always use the **expressed genes in your experiment** as the background — not the whole genome; using the whole genome inflates significance.
+
+> ⚠️ Apply **FDR correction** — you are testing thousands of terms simultaneously.
+
+> ⚠️ Run enrichment **separately** on upregulated and downregulated gene lists to preserve directionality.
+
+> ⚠️ Treat results as **hypothesis-generating**, not hypothesis-confirming.
+
+## Web-Based Tools
+
+The primary tool for today's hands-on is **g:Profiler** — a versatile ORA tool supporting GO, KEGG, and Reactome simultaneously, with publication-ready output and sensible defaults for background and multiple testing correction.
+
+Other widely used tools worth knowing:
+
+- **[Enrichr](https://maayanlab.cloud/Enrichr/)** — fast multi-database ORA; very beginner-friendly; useful for quick cross-database exploration
+- **[DAVID](https://davidbioinformatics.nih.gov/)** — long-established NIH tool with broad database coverage; widely cited in the literature
+- **[GSEA](https://www.gsea-msigdb.org/gsea/index.jsp)** — the standard tool for ranked-list GSEA; includes MSigDB access; steeper learning curve
+- **[Reactome Pathway Browser](https://reactome.org/PathwayBrowser/)** — interactive pathway visualisation; useful for exploring where your genes sit within specific pathway diagrams
+
+------------------------------------------------------------------------
+
+# Hands-On Activity — Enrichment Analysis with g:Profiler
+
+> 🧪 **Duration:** 50 minutes\
+> **Tool:** [g:Profiler](https://biit.cs.ut.ee/gprofiler/) — free, web-based, no account required\
+> **Dataset:** [GSE96870](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE96870) — mouse cerebellum, C57BL/6 female mice, Day 0 (non-infected) vs. Day 8 (Influenza A, PR8 strain), Illumina HiSeq 2500, 100 bp paired-end reads.\
+> **Gene lists:** Pre-prepared by the instructors using edgeR (padj < 0.05, |log2FC| ≥ 1): `InfluenzaAvsNonInfected_edgeR_up.txt` (170 genes) and `InfluenzaAvsNonInfected_edgeR_down.txt` (103 genes).
+
+## Step 1 — Run ORA on the Upregulated Gene List *(15 min)*
+
+1. Navigate to [g:Profiler](https://biit.cs.ut.ee/gprofiler/) and select the **g:GOSt** tab
+2. Paste the **upregulated** gene list (170 genes) into the query box
+3. Set **Organism** to *Mus musculus*
+4. Under **Data sources**, select **GO:BP** (Biological Process), **KEGG**, and **Reactome**; deselect others to keep results focused
+5. Ensure **Significance threshold** is set to *g:SCS* (the default — g:Profiler's own multiple testing correction method)
+6. Click **Run query**
+7. Explore the **Manhattan plot**: each dot = one enriched term; y-axis = −log10(adjusted p-value); colour = data source
+8. Click on individual dots to see the term name, gene count, and the specific genes driving the enrichment
+
+**Expected results:** Top GO:BP terms should include 'defense response to virus', 'response to interferon-beta', 'innate immune response', 'antigen processing and presentation of peptide antigen via MHC class I'. KEGG should show 'Influenza A' and 'Antigen processing and presentation'. Reactome should show 'Interferon signalling'. Key genes driving these terms include Irf7, Bst2, Iigp1, Igtp, Irgm1, Ifi47, Gbp4, Tgtp1/2, H2-Q4/Q6/Q7, Nlrc5, and Cd274 — classic interferon-stimulated genes (ISGs) and MHC class I components.
+
+> 💬 **Discussion:** Do these enriched terms make biological sense for the cerebellar response to a peripheral Influenza A infection at Day 8?
+
+## Step 2 — Run ORA on the Downregulated Gene List *(10 min)*
+
+1. Clear the query box and paste the **downregulated** gene list (103 genes)
+2. Run with the same settings as Step 1
+3. Compare the top enriched terms with those from the upregulated list
+
+**Expected results:** Downregulated terms often relate to myelination and oligodendrocyte function (driven by Plp1, Opalin, Ugt8a, Gjc2, Gal3st1), neuronal signalling and synaptic activity (Nr4a1/2/3, Fos, Fosb, Npas4), and potentially haemoglobin/oxygen transport (Hba-a1/a2, Hbb-bs/bt).
+
+> 💬 **Discussion:** Do upregulated and downregulated terms together tell a consistent biological story about the effect of peripheral influenza infection on the cerebellum?
+
+## Step 3 — Explore and Filter the Results Table *(10 min)*
+
+1. Below the Manhattan plot, open the **Detailed results** table
+2. Sort by adjusted p-value — are the top terms specific and interpretable, or are they very broad (e.g., "metabolic process", "binding")?
+3. Toggle between GO:BP, KEGG, and Reactome tabs — do the top pathways converge on the same biology across databases?
+4. Use the **term size filter** to exclude very large GO terms (e.g., terms with >500 genes) — do the results change?
+5. Identify 3–5 terms you would include in a paper and 2–3 you would consider too generic to report
+
+## Step 4 — Interpretation & Discussion *(10 min)*
+
+Group discussion questions:
+
+- What is the dominant biological theme in the upregulated genes?
+- Are there any surprising or counter-intuitive enriched terms?
+- Which terms would you report in a paper, and which seem like database noise?
+- How do KEGG and Reactome results compare to GO:BP — do they add complementary information or largely overlap?
+- How would you follow up on these results at the bench?
+
+### Optional R companion: running GO enrichment with clusterProfiler {.unnumbered}
+
+An alternative to g:Profiler for programmatic enrichment analysis is the `enrichGO()` function from the [clusterProfiler](https://bioconductor.org/packages/clusterProfiler/) Bioconductor package. clusterProfiler is one of the most widely used enrichment tools in the R/Bioconductor ecosystem and is the tool used by the IMBB Bioinformatics Unit's production pipeline. It offers fine-grained control over parameters and produces publication-quality visualisations out of the box.
+
+A key difference from g:Profiler is that `enrichGO()` requires an **OrgDb** annotation package for the organism of interest (e.g., `org.Mm.eg.db` for mouse). It also works natively with Entrez gene IDs, though it can accept other ID types (gene symbols, Ensembl IDs) via the `keyType` parameter.
+
+> 📖 **Reference:** Yu G *et al.* clusterProfiler: an R package for comparing biological themes among gene clusters. *OMICS* 16(5), 284–287 (2012). See also the [clusterProfiler book, Chapter 4](https://yulab-smu.top/biomedical-knowledge-mining-book/021-go.html).
+
+```{r clusterprofiler-install, eval=FALSE}
+# Install clusterProfiler and the mouse annotation database (one-time setup)
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+
+BiocManager::install(c("clusterProfiler", "org.Mm.eg.db", "enrichplot"))
+```
+
+```{r clusterprofiler-setup}
+library(clusterProfiler)
+library(org.Mm.eg.db)
+library(enrichplot)
+library(tidyverse)
+
+# Load gene lists (same files as the g:Profiler hands-on)
+up_genes   <- readLines("InfluenzaAvsNonInfected_edgeR_up.txt")
+down_genes <- readLines("InfluenzaAvsNonInfected_edgeR_down.txt")
+```
+
+#### Gene ID conversion {.unnumbered}
+
+`enrichGO()` can work with gene symbols directly by setting `keyType = "SYMBOL"`. However, internally the GO annotation in `OrgDb` is indexed by Entrez IDs, so clusterProfiler will map symbols to Entrez IDs behind the scenes. You can also convert IDs explicitly using `bitr()`:
+
+```{r clusterprofiler-id-convert}
+# Optional: explicit ID conversion from symbols to Entrez IDs
+up_entrez <- bitr(up_genes,
+                  fromType = "SYMBOL",
+                  toType   = "ENTREZID",
+                  OrgDb    = org.Mm.eg.db)
+
+head(up_entrez)
+cat("Mapped", nrow(up_entrez), "of", length(up_genes), "gene symbols to Entrez IDs\n")
+```
+
+#### Running enrichGO() on upregulated genes {.unnumbered}
+
+```{r clusterprofiler-enrich-up}
+# ORA on upregulated genes — GO Biological Process
+ego_up <- enrichGO(
+  gene          = up_genes,
+  OrgDb         = org.Mm.eg.db,
+  keyType       = "SYMBOL",
+  ont           = "BP",
+  pAdjustMethod = "BH",
+  pvalueCutoff  = 0.05,
+  qvalueCutoff  = 0.05,
+  readable      = TRUE     # ensures gene symbols in the output
+)
+
+# View top enriched terms
+if (!is.null(ego_up) && nrow(ego_up) > 0) {
+  head(ego_up, 15)
+}
+```
+
+#### Visualising the results {.unnumbered}
+
+clusterProfiler integrates tightly with the [enrichplot](https://bioconductor.org/packages/enrichplot/) package to produce a variety of publication-quality plots.
+
+```{r clusterprofiler-dotplot-up}
+# Dot plot — shows gene ratio, count, and adjusted p-value
+if (!is.null(ego_up) && nrow(ego_up) > 0) {
+  dotplot(ego_up, showCategory = 15) +
+    ggtitle("GO:BP Enrichment — Upregulated Genes (enrichGO)")
+}
+```
+
+```{r clusterprofiler-barplot-up}
+# Bar plot — enriched terms ranked by gene count
+if (!is.null(ego_up) && nrow(ego_up) > 0) {
+  barplot(ego_up, showCategory = 15) +
+    ggtitle("GO:BP Enrichment — Upregulated Genes")
+}
+```
+
+```{r clusterprofiler-cnetplot-up}
+# Gene-concept network — shows which genes contribute to which terms
+if (!is.null(ego_up) && nrow(ego_up) > 0) {
+  cnetplot(ego_up, showCategory = 5)
+}
+```
+
+```{r clusterprofiler-emapplot-up}
+# Enrichment map — clusters similar terms by shared genes
+if (!is.null(ego_up) && nrow(ego_up) > 0) {
+  ego_up_sim <- pairwise_termsim(ego_up)
+  emapplot(ego_up_sim, showCategory = 20) +
+    ggtitle("Enrichment Map — Upregulated Genes")
+}
+```
+
+#### Running enrichGO() on downregulated genes {.unnumbered}
+
+```{r clusterprofiler-enrich-down}
+ego_down <- enrichGO(
+  gene          = down_genes,
+  OrgDb         = org.Mm.eg.db,
+  keyType       = "SYMBOL",
+  ont           = "BP",
+  pAdjustMethod = "BH",
+  pvalueCutoff  = 0.05,
+  qvalueCutoff  = 0.05,
+  readable      = TRUE
+)
+
+if (!is.null(ego_down) && nrow(ego_down) > 0) {
+  dotplot(ego_down, showCategory = 15) +
+    ggtitle("GO:BP Enrichment — Downregulated Genes (enrichGO)")
+}
+```
+
+#### Simplifying redundant GO terms {.unnumbered}
+
+A common challenge with GO enrichment is redundancy — many enriched terms overlap heavily because of the hierarchical structure of GO. clusterProfiler provides a `simplify()` function that uses semantic similarity (via GOSemSim) to collapse redundant terms, keeping the most significant representative from each cluster.
+
+```{r clusterprofiler-simplify}
+# Simplify redundant terms (keeps the most significant from each cluster)
+if (!is.null(ego_up) && nrow(ego_up) > 0) {
+  ego_up_simplified <- simplify(ego_up, cutoff = 0.7, by = "p.adjust", select_fun = min)
+
+  cat("Terms before simplify():", nrow(ego_up), "\n")
+  cat("Terms after simplify(): ", nrow(ego_up_simplified), "\n")
+
+  dotplot(ego_up_simplified, showCategory = 15) +
+    ggtitle("GO:BP Enrichment — Upregulated (Simplified)")
+}
+```
+
+> 💡 **g:Profiler vs. clusterProfiler — when to use which?**
+>
+> - **g:Profiler** (web or `gprofiler2`): Quick exploration, multiple databases in one query (GO + KEGG + Reactome), organism-agnostic, no local annotation packages needed.
+> - **clusterProfiler** (`enrichGO`): Full control over parameters, rich visualisation ecosystem (dotplot, cnetplot, emapplot), `simplify()` for redundancy reduction, integrates into reproducible R pipelines. Requires a Bioconductor `OrgDb` package for your organism.
+>
+> Both are valid choices — they complement each other well.
+
+------------------------------------------------------------------------
+
+# Wrap-Up {.unnumbered}
+
+## Recap {.unnumbered}
+
+- **Workflow → QC → DE overview → Enrichment** — the session arc mirrors the analysis pipeline
+- The analysis does not end with a list of DEGs — enrichment is where biology begins
+- Topics not covered in this session but available in the extended curriculum include: data retrieval & deposition, a detailed SARTools report walkthrough, the DESeq2 vs. edgeR comparison, and FAIR data principles
+
+> ✅ **Key takeaway:** Participants leave with a mental map of the RNA-seq workflow, practical experience running and interpreting an ORA in g:Profiler, and enough vocabulary to engage productively with their bioinformatics facility.
+
+------------------------------------------------------------------------
+
+# Resources & Further Reading {.unnumbered}
+
+## Databases & Tools {.unnumbered}
+
+- [FastQC](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/)
+- [MultiQC](https://multiqc.info/)
+- [Trim Galore](https://www.bioinformatics.babraham.ac.uk/projects/trim_galore/)
+- [fastp](https://github.com/OpenGene/fastp)
+- [BBDuk / BBTools](https://jgi.doe.gov/data-and-tools/software-tools/bbtools/)
+- [SARTools (GitHub)](https://github.com/PF2-pasteur-fr/SARTools)
+- [nf-core/differentialabundance](https://nf-co.re/differentialabundance)
+- [g:Profiler](https://biit.cs.ut.ee/gprofiler/)
+- [Enrichr](https://maayanlab.cloud/Enrichr/)
+- [DAVID](https://davidbioinformatics.nih.gov/)
+- [GSEA / MSigDB](https://www.gsea-msigdb.org/gsea/index.jsp)
+- [Reactome](https://reactome.org/)
+- [Gene Ontology Consortium](http://geneontology.org/)
+- [KEGG](https://www.kegg.jp/)
+
+## Key Papers {.unnumbered}
+
+**Differential Expression:**
+
+- Love MI, Huber W, Anders S. Moderated estimation of fold change and dispersion for RNA-seq data with DESeq2. *Genome Biology* 15, 550 (2014). <https://doi.org/10.1186/s13059-014-0550-8>
+- Robinson MD, McCarthy DJ, Smyth GK. edgeR: a Bioconductor package for differential expression analysis of digital gene expression data. *Bioinformatics* 26(1), 139–140 (2010). <https://doi.org/10.1093/bioinformatics/btp616>
+- Varet H et al. SARTools: A DESeq2- and edgeR-Based R Pipeline for Comprehensive Differential Analysis of RNA-Seq Data. *PLOS ONE* 11(6), e0157022 (2016). <https://doi.org/10.1371/journal.pone.0157022>
+- Ewels PA et al. The nf-core framework for community-curated bioinformatics pipelines. *Nature Biotechnology* 38, 276–278 (2020). <https://doi.org/10.1038/s41587-020-0439-x>
+
+**Alignment & Quantification:**
+
+- Dobin A et al. STAR: ultrafast universal RNA-seq aligner. *Bioinformatics* 29(1), 15–21 (2013). <https://doi.org/10.1093/bioinformatics/bts635>
+- Patro R et al. Salmon provides fast and bias-aware quantification of transcript expression. *Nature Methods* 14, 417–419 (2017). <https://doi.org/10.1038/nmeth.4197>
+
+**Functional Enrichment:**
+
+- Subramanian A et al. Gene set enrichment analysis: a knowledge-based approach for interpreting genome-wide expression profiles. *PNAS* 102(43), 15545–15550 (2005). <https://doi.org/10.1073/pnas.0506580102>
+- Raudvere U et al. g:Profiler: a web server for functional enrichment analysis and conversions of gene lists. *Nucleic Acids Research* 47(W1), W191–W198 (2019). <https://doi.org/10.1093/nar/gkz369>
+
+------------------------------------------------------------------------
+
+<div style="text-align: center; color: grey; margin-top: 2em;">
+
+*Developed by the Bioinformatics Unit, IMBB-FORTH Research Institute.*\
+*Heraklion, Crete, Greece*
+
+</div>
