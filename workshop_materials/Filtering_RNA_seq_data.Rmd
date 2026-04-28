@@ -150,7 +150,7 @@ Tip: the `abs()`(absolute value) function effectively turns all negative numbers
 
 ```{r filter-all-degs, eval=FALSE}
 # Filter for total statistically and biologically significant genes
-down_genes <- subset(clean_data, ____ < ____ & abs(____) > ____)
+total_genes <- subset(clean_data, ____ < ____ & abs(____) > ____)
 
 # How many total statistically and biologically significant genes did you find?
 nrow(total_genes)
