@@ -44,16 +44,16 @@ Do you have R & Rstudio installed? → Check out our [R & RStudio Setup guide](h
 | Wrap-up & discussion | 5 min |
 | **Total** | **120 min** |
 
-## Prerequisites
+## Prerequisites - please make sure that you have gone through this list **before** the beginning of the course
 
-No coding experience is required. The workshop uses web-based tools [(g:Profiler)](https://biit.cs.ut.ee/gprofiler/gost) for the hands-on activity.
-
-## How to use
-
-1. Clone or download this repository
-2. Open `rnaseq_workshop_1day.Rmd` in RStudio
-3. Click **Knit** to render the HTML notebook, or follow along with the pre-rendered version provided by the instructors
-4. For the hands-on activity, the gene list files (`*_up.txt` and `*_down.txt`) should be in the same directory as the Rmd file
+- You will need a laptop with access to the Internet.
+- Please download all files in the **workshop_materials** directory prior to the course.
+- No coding experience is required. The workshop uses web-based tools [(g:Profiler)](https://biit.cs.ut.ee/gprofiler/gost) for the functional enrichment analysis hands-on session.
+- Time permitting we may also have a hands-on session performing functional enrichment using the [clusterProfiler](https://bioconductor.org/packages/release/bioc/html/clusterProfiler.html) package in R.
+- To view the .RMD file and perform the hands-on activity using clusterProfiler, please follow the instructions below:
+  1. Open `rnaseq_workshop_1day.v2.Rmd` in RStudio
+  2. Click **Knit** to render the HTML notebook, or follow along with the pre-rendered version provided by the instructors
+  3. For the hands-on activity, the gene list files (`*_up.txt` and `*_down.txt`) should be in the same directory as the Rmd file
 
 ## Scope
 
