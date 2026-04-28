@@ -163,7 +163,8 @@ You found the genes! Now let's save them to your computer so you can use them fo
 **CODE CHALLENGE:** Fill in the `____` with the name(s) of the R object(s) that you want to save into (a) file(s).
 
 ```{r save-data, eval=FALSE}
-# Saving into a file, for more than one files, copy the code again and change the object name and the file name.
+# Saving into a file
+# For more than one files, copy the code again and change the object name and the file name.
 # Remember to always place file names into quotes! (e.g., "my_awesome_results.txt")
 write.table(____, file = ____, sep = "\t", row.names = FALSE)
 
