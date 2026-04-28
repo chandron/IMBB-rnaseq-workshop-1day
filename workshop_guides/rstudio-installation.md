@@ -35,6 +35,14 @@ print("All good.")
 
 If it prints "All good." — the environment is ready.
 
+For this course you will also need to install rmarkdown package.  
+All you need to do is run: 
+```r
+install.packages("rmarkdown")
+```
+
+Done!
+
 ---
 
 ## macOS
@@ -87,6 +95,15 @@ print("All good.")
 ```
 
 If it prints "All good." — the environment is ready.
+
+
+For this course you will also need to install rmarkdown package.  
+All you need to do is run: 
+```r
+install.packages("rmarkdown")
+```
+
+Done!
 
 ---
 
@@ -142,6 +159,14 @@ print("All good.")
 ```
 
 If it prints "All good." — the environment is ready.
+
+For this course you will also need to install rmarkdown package.  
+All you need to do is run: 
+```r
+install.packages("rmarkdown")
+```
+
+Done!
 
 ### Linux troubleshooting
 
