@@ -8,6 +8,35 @@ A 2-hour workshop designed to empower wet-lab researchers who generate RNA-seq d
 New to GitHub? → Check out our brief [GitHub Basics guide](https://github.com/chandron/IMBB-rnaseq-workshop-1day/blob/main/workshop_guides/github-basics.md)  
 Do you have R & Rstudio installed? → Check out our [R & RStudio Setup guide](https://github.com/chandron/IMBB-rnaseq-workshop-1day/blob/main/workshop_guides/rstudio-installation.md)
 
+## Prerequisites - please make sure that you have gone through this list **before** the beginning of the course
+
+- You will need a laptop with access to the Internet.
+- Please download all files in the **workshop_materials** directory prior to the course.
+- No coding experience is required. The workshop uses web-based tools [(g:Profiler)](https://biit.cs.ut.ee/gprofiler/gost) for the functional enrichment analysis hands-on session.
+- Time permitting we may also have a hands-on session performing functional enrichment using the [clusterProfiler](https://bioconductor.org/packages/release/bioc/html/clusterProfiler.html) package in R.
+- To view the .RMD file and perform the hands-on activity using clusterProfiler, please follow the instructions below:
+  1. Open `rnaseq_workshop_1day.v2.Rmd` in RStudio
+  2. Click **Knit** to render the HTML notebook, or follow along with the pre-rendered version provided by the instructors
+  3. For the hands-on activity, the gene list files (`*_up.txt` and `*_down.txt`) should be in the same directory as the Rmd file
+
+---
+
+## Scope
+
+⚠️ This workshop covers **eukaryotic** bulk RNA-seq only. Prokaryotic RNA-seq requires different alignment strategies, annotation resources, and analysis tools.
+
+## Session structure
+
+| Segment | Duration |
+|---|---|
+| Topic 1 — RNA-seq workflow schematic | 10 min |
+| Topic 2 — QC & trimming + MultiQC walkthrough | 25 min |
+| Topic 3 — DE pipelines & report interpretation | 15 min |
+| Topic 4 — Functional enrichment concepts | 15 min |
+| Hands-on — Enrichment analysis with [g:Profiler](https://biit.cs.ut.ee/gprofiler/gost)| 50 min |
+| Wrap-up & discussion | 5 min |
+| **Total** | **120 min** |
+
 ## Workshop dataset
 
 **[GSE96870](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE96870)** — *The effect of upper-respiratory infection on transcriptomic changes in the CNS*
@@ -32,32 +61,6 @@ Do you have R & Rstudio installed? → Check out our [R & RStudio Setup guide](h
 | `SARTools_report.html` | A SARTools report of a DE analysis. |
 | `student_cheatsheet.docx` | Cheatsheet doc with important concepts. |
 
-## Session structure
-
-| Segment | Duration |
-|---|---|
-| Topic 1 — RNA-seq workflow schematic | 10 min |
-| Topic 2 — QC & trimming + MultiQC walkthrough | 25 min |
-| Topic 3 — DE pipelines & report interpretation | 15 min |
-| Topic 4 — Functional enrichment concepts | 15 min |
-| Hands-on — Enrichment analysis with [g:Profiler](https://biit.cs.ut.ee/gprofiler/gost)| 50 min |
-| Wrap-up & discussion | 5 min |
-| **Total** | **120 min** |
-
-## Prerequisites - please make sure that you have gone through this list **before** the beginning of the course
-
-- You will need a laptop with access to the Internet.
-- Please download all files in the **workshop_materials** directory prior to the course.
-- No coding experience is required. The workshop uses web-based tools [(g:Profiler)](https://biit.cs.ut.ee/gprofiler/gost) for the functional enrichment analysis hands-on session.
-- Time permitting we may also have a hands-on session performing functional enrichment using the [clusterProfiler](https://bioconductor.org/packages/release/bioc/html/clusterProfiler.html) package in R.
-- To view the .RMD file and perform the hands-on activity using clusterProfiler, please follow the instructions below:
-  1. Open `rnaseq_workshop_1day.v2.Rmd` in RStudio
-  2. Click **Knit** to render the HTML notebook, or follow along with the pre-rendered version provided by the instructors
-  3. For the hands-on activity, the gene list files (`*_up.txt` and `*_down.txt`) should be in the same directory as the Rmd file
-
-## Scope
-
-⚠️ This workshop covers **eukaryotic** bulk RNA-seq only. Prokaryotic RNA-seq requires different alignment strategies, annotation resources, and analysis tools.
 
 ## License
 
