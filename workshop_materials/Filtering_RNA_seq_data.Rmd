@@ -1,0 +1,174 @@
+---
+title: "Filtering Gene Expression Data"
+output: html_document
+---
+  
+## Introduction  
+  
+You have received a massive dataset containing thousands of genes from an experiment (Influenza A vs. Non-Infected cells).
+
+Your goal is to find the specific genes that changed significantly due to the infection.
+
+To do this, you will need to fill in the missing code (marked as `____`) to filter the data.  
+Note: The code blocks below will cause an error if you try to run them before replacing the `____` with your answers!
+  
+***
+
+### Setting Up Your Workspace
+
+R scripts run in a specific folder on your computer called the **working directory**. Before we begin, we need to know where R is currently looking, and then tell it where it *should* look to find your data.
+
+**How to find your file path:**
+* **MAC:** Right-click + Option your file -> select "Copy as Pathname"
+* **WINDOWS:** Shift + Right-click your file -> select "Copy as path" (Remember to change `\` to `/` in R!)
+
+```{r setup-directory}
+# The getwd() function tells you exactly which folder R is currently looking at.
+getwd()
+
+# The setwd() function tells R where your data is saved.
+# setwd("C:/Users/YourName/My_file_location") # Windows example
+# setwd("/Users/YourName/My_file_location") # Mac example
+setwd("/Users/electratsaglioti/Downloads")
+```
+
+***
+
+### STEP 0: How to use Code Chunks
+
+Check out this example!
+
+```{r load-data-example, eval=FALSE}
+# Replace the ____ with "Hello World"
+print(____)
+
+```
+  
+When you fill it in, it will look like:
+
+```{r load-data-example-completed, eval=FALSE}
+print("Hello World")
+
+```
+
+**Rule to remember:** In R, when you are typing "plain text" (like a file name), you must put it in "quotation marks". When you are typing a number or a column name, you don't need to.
+  
+### STEP 1: Load and Clean the Data
+  
+First, we need to load the data into R and remove any rows with missing data (NAs). Run the chunk below to get started.
+
+```{r load-data, eval=FALSE}
+# Set your working directory (Make sure to change this to your actual folder!)
+setwd(____)
+
+# Load the data
+# Use `read.table()` to read your text file into a table. 
+#`header = TRUE` tells R that the first row contains the column names.
+#`sep = "\t"` tells R that the columns are separated by "tabs".
+my_data <- read.table("InfluenzaAvsNonInfected.complete.txt", header = TRUE, sep = "\t")
+
+# Remove rows with NAs
+# Certain genes had very low expression levels (essentially not expressed), so statistics were not calculated for them, resulting in "NA" (Not Available). The `na.omit()` function scans your data, and if any row has an "NA" in any column, it deletes that row. 
+clean_data <- na.omit(my_data)
+
+# You can check both tables from the Environment window to your right.
+
+# Print the names of the columns to the console (will be helpful later..)
+colnames(clean_data)
+
+```
+
+***
+  
+### STEP 2: Filter for Statistical Significance
+  
+Now we want to find genes that are statistically significant.
+
+**QUESTION 2:** Which column name should you use to check for significance? 
+
+**QUESTION 3:** What is a standard scientific cutoff value for significance (e.g. 0.13)? 
+
+
+**CODE CHALLENGE:** Replace the `____` sections in the code below with your answers from Questions 2 and 3 to filter the dataset.
+
+```{r filter-significance, eval=FALSE}
+# Replace the blanks to keep only statistically significant genes
+# The `subset()` function keeps only the rows of clean_data that meet our rule.
+sig_genes <- subset(clean_data, ____ < ____)
+
+# Let's count how many we found!
+nrow(sig_genes)
+```
+
+***
+  
+### STEP 3: Filter for Biologically Significant UP-Regulated Genes
+  
+Just because a gene is statistically significant, it doesn't mean that the change is large enough to be biologically significant.
+
+**QUESTION 4:** Look at the columns again. Which columns tell you how much the gene's expression actually changed between the two conditions? 
+
+**QUESTION 5:** Which one is best suited for filtering?
+
+**QUESTION 6:** If a gene is UP-regulated (increased expression), should the numbers in this column be positive or negative? What cutoff value will you choose to represent a "large" increase?
+
+**CODE CHALLENGE:** Fill in the blanks below. You need to include BOTH the rule for your statistical significance AND the rule for your biological significance.
+
+```{r filter-up-regulated, eval=FALSE}
+# Filter for UP-regulated genes
+# We use the & symbol to combine rules! In our case, we want to combine the statistical rule with the biological significance rule!
+up_genes <- subset(clean_data, ____ < ____ & ____ > ____)
+
+# How many UP-regulated genes did you find?
+nrow(up_genes)
+```
+
+***
+  
+### STEP 4: Filter for Biologically Significant DOWN-Regulated Genes
+  
+Now let's find the genes that the virus suppressed!
+
+**CODE CHALLENGE:** Fill in the blanks below to find the down-regulated genes.
+
+```{r filter-down-regulated, eval=FALSE}
+# Filter for DOWN-regulated genes
+down_genes <- subset(clean_data, ____ < ____ & ____ < ____)
+
+# How many DOWN-regulated genes did you find?
+nrow(down_genes)
+```
+
+***
+
+### STEP 5: Filter the total statistically and biologically significant genes.
+  
+Tip: the `abs()`(absolute value) function effectively turns all negative numbers into positive numbers, while positive numbers stay exactly as they are..
+
+**CODE CHALLENGE:** Fill in the blanks below to find the down-regulated genes.
+
+```{r filter-all-degs, eval=FALSE}
+# Filter for DOWN-regulated genes
+down_genes <- subset(clean_data, ____ < ____ & abs(____) < ____)
+
+# How many DOWN-regulated genes did you find?
+nrow(total_genes)
+```
+
+### STEP 5: Save Your Discoveries!
+
+You found the genes! Now let's save them to your computer so you can use them for your g:profiler analysis!
+
+**CODE CHALLENGE:** Fill in the `____` with the name(s) of the R object(s) that you want to save into (a) file(s).
+
+```{r save-data, eval=FALSE}
+# Saving into a file, for more than one files, copy the code again and change the object name and the file name.
+# Remember to always place file names into quotes! (e.g., "my_awesome_results.txt")
+write.table(____, file = ____, sep = "\t", row.names = FALSE)
+
+
+```
+
+***
+
+**Great job! You have successfully filtered an RNA-seq dataset.**
