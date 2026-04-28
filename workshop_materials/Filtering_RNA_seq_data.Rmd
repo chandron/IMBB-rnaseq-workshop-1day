@@ -169,7 +169,7 @@ You found the genes! Now let's save them to your computer!
 # Remember to always place file names into quotes! (e.g., "my_awesome_results.txt")
 write.table(____, file = ____, sep = "\t", row.names = FALSE)
 
-#You can also save their Ids in separate files, for your g:profiler analysis!
+#You can also save their Ids in a separate file, for your g:profiler analysis!
 write.table(____, file = ____, sep = "\t", row.names = FALSE, col.names = FALSE, quote = FALSE)
 
 ```
