@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Excel Import & Filtering — Gene Expression Data</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: Arial, sans-serif;
+    font-size: 10.5px;
+    line-height: 1.5;
+    color: #4A5568;
+    background: #fff;
+    padding: 20px 24px 24px;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .header-bar {
+    background: #1B3A6B;
+    color: #fff;
+    padding: 10px 16px 8px;
+    border-radius: 4px 4px 0 0;
+  }
+  .header-bar h1 { font-size: 14px; font-weight: bold; color: #fff; letter-spacing: 0.1px; }
+  .header-bar .subtitle { font-size: 9px; color: #D4EDE9; margin-top: 3px; }
+
+  .footer-bar {
+    background: #1B3A6B; color: #D4EDE9;
+    font-size: 9px; padding: 6px 16px;
+    border-radius: 0 0 4px 4px;
+  }
+
+  .section-head {
+    color: #fff; font-size: 10px; font-weight: bold;
+    padding: 4px 10px; letter-spacing: 0.3px;
+  }
+  .section-head.teal  { background: #1A7A6E; }
+  .section-head.navy  { background: #1B3A6B; }
+  .section-head.amber { background: #7a4f00; }
+
+  .main-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 0; border: 1px solid #E2E8F0; border-top: none;
+  }
+  .col { border-right: 1px solid #E2E8F0; }
+  .col:last-child { border-right: none; }
+  .block { border-bottom: 1px solid #E2E8F0; }
+  .block:last-child { border-bottom: none; }
+
+  .full-width-block {
+    border: 1px solid #E2E8F0;
+    border-top: none;
+  }
+
+  table.section { width: 100%; border-collapse: collapse; }
+  table.section thead tr { background: #F4F6F9; }
+  table.section thead th {
+    padding: 6px 10px; font-size: 9.5px; font-weight: bold;
+    color: #1B3A6B; border: 1px solid #E2E8F0; text-align: left;
+  }
+  table.section tbody tr:nth-child(odd) td  { background: #fff; }
+  table.section tbody tr:nth-child(even) td { background: #F4F6F9; }
+  table.section tbody td {
+    padding: 8px 10px; border: 1px solid #E2E8F0;
+    color: #4A5568; font-size: 10px; vertical-align: middle;
+  }
+  table.section tbody td.label {
+    font-weight: bold; color: #1B3A6B; width: 34%; line-height: 1.3;
+  }
+  .full-width-block table.section tbody td.label { width: 25%; }
+  
+  table.section tbody td code {
+    font-family: 'Courier New', monospace; font-size: 9.5px;
+    background: #E2E8F0; padding: 1px 4px; border-radius: 2px; color: #1B3A6B;
+  }
+
+  tr.trap-row td { background: #FEF9EC !important; border-left: 3px solid #C8972A !important; }
+  tr.trap-row td.label { color: #7a4f00 !important; }
+  tr.trap-row td.label::before { content: "⚠ "; }
+
+  tr.note-row td { background: #F0FAF9 !important; border-left: 3px solid #1A7A6E !important; }
+  tr.note-row td.label { color: #1A7A6E !important; }
+  tr.note-row td.label::before { content: "ℹ "; }
+
+  .compare-pair { 
+    display: flex; 
+    gap: 6px; 
+    margin-top: 8px; 
+    margin-bottom: 2px; 
+    align-items: stretch; 
+  }
+  .cbox {
+    flex: 1; 
+    padding: 6px 8px; 
+    border-radius: 4px;
+    font-family: 'Courier New', monospace; 
+    font-size: 9px; 
+    line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+  .cbox.bad  { background: #FEF0F0; border: 1px solid #f5bfbf; color: #7a1f1f; }
+  .cbox.good { background: #EDF7ED; border: 1px solid #b0d9b0; color: #1a5e1a; }
+  .cbox-label {
+    font-family: Arial, sans-serif; 
+    font-size: 8px; 
+    font-weight: bold;
+    text-transform: uppercase; 
+    letter-spacing: 0.6px; 
+    margin-bottom: 4px; 
+    opacity: 0.7;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+    padding-bottom: 3px;
+  }
+
+  .steps-list { padding: 8px 10px; }
+  .step-row {
+    display: flex; gap: 7px; align-items: flex-start;
+    padding: 4px 0; border-bottom: 1px solid #E2E8F0;
+  }
+  .step-row:last-child { border-bottom: none; }
+  .step-num {
+    min-width: 18px; height: 18px; background: #1B3A6B; color: #fff;
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-size: 9px; font-weight: bold; flex-shrink: 0; margin-top: 1px;
+  }
+  .step-text { font-size: 10px; color: #4A5568; }
+  .step-text strong { color: #1B3A6B; }
+
+  .tag {
+    display: inline-block; font-size: 8.5px; font-weight: bold;
+    padding: 2px 6px; border-radius: 10px; margin: 0 4px 0 6px; vertical-align: middle;
+  }
+  .tag-up   { background: #EDF7ED; color: #1a5e1a; border: 1px solid #b0d9b0; }
+  .tag-down { background: #FEF0F0; color: #7a1f1f; border: 1px solid #f5bfbf; }
+  .tag-sig  { background: #EAF0FB; color: #1B3A6B; border: 1px solid #b0c4f0; }
+
+  kbd {
+    font-family: 'Courier New', monospace; font-size: 9px;
+    background: #1B3A6B; color: #fff; padding: 2px 5px; border-radius: 3px; white-space: nowrap;
+  }
+
+  .tip-box {
+    background: #D4EDE9; border-left: 4px solid #1A7A6E;
+    padding: 8px 10px; font-size: 10px; color: #1A4A46;
+  }
+  .tip-box strong { color: #1A7A6E; }
+
+  p.inner { padding: 8px 10px; font-size: 10px; }
+  p.inner strong { color: #1B3A6B; }
+
+  .filter-instruction { margin-top: 6px; margin-bottom: 4px; line-height: 1.5; }
+  .sub-note { font-size: 9px; color: #888; display: block; margin-top: 2px; }
+  
+  .win-mac-note {
+    background: #EAF0FB; color: #1B3A6B; padding: 4px 6px; 
+    border-radius: 3px; font-size: 9px; margin-top: 4px; margin-bottom: 4px;
+    display: inline-block; border: 1px solid #b0c4f0;
+  }
+
+</style>
+</head>
+<body>
+
+<div class="header-bar">
+  <h1>Excel Import &amp; Filtering</h1>
+  <div class="subtitle">Christos Andronis &amp; Electra Tsaglioti &nbsp;│&nbsp; IMBB-FORTH Bioinformatics Unit &nbsp;│&nbsp; ⚠️ Check values against the original .txt after import</div>
+</div>
+
+<div class="main-grid">
+
+  <div class="col">
+
+    <div class="block">
+      <div class="section-head teal">Importing the .txt File</div>
+      <div class="steps-list">
+        <div class="step-row">
+          <div class="step-num">1</div>
+          <div class="step-text"><strong>Never double-click.</strong> Use File → Open. <br><strong>Note (Windows):</strong> Toggle to <strong>All Files (*.*)</strong> instead of All Excel Files (bottom right) to find your .txt file. Select it → Text Import Wizard opens.</div>
+        </div>
+        <div class="step-row">
+          <div class="step-num">2</div>
+          <div class="step-text">Step 1 → <strong>Delimited</strong> &nbsp;|&nbsp; Step 2 → check <strong>Tab</strong> only, uncheck all others.</div>
+        </div>
+        <div class="step-row">
+          <div class="step-num">3</div>
+          <div class="step-text">Step 3 → click the <code>Id</code> column → set to <strong>Text</strong>.</div>
+        </div>
+        <div class="step-row">
+          <div class="step-num">4</div>
+          <div class="step-text">Click on <strong>Advanced</strong> and set Decimal separator to <strong>.</strong> and Thousands separator to <strong>,</strong> and then click <strong>Finish</strong>.</div>
+        </div>
+        <div class="step-row">
+          <div class="step-num">5</div>
+          <div class="step-text">Accept the <strong>Convert</strong> prompt when it appears.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="section-head teal">Data Cleaning</div>
+      <p class="inner">Genes with too few reads have <code>NA</code> in all statistics columns. Because <code>NA</code> is text, it will break your number filters. Do this <strong>before</strong> you start analyzing:</p>
+      <div class="steps-list" style="padding-top: 0;">
+        <div class="step-row">
+          <div class="step-num">1</div>
+          <div class="step-text">Click the filter drop down on any of the statistics columns and <strong>uncheck NA</strong>.</div>
+        </div>
+        <div class="step-row">
+          <div class="step-num">2</div>
+          <div class="step-text">Press <kbd>Ctrl+A</kbd> to select all the visible, clean data, then <kbd>Ctrl+C</kbd> to copy.</div>
+        </div>
+        <div class="step-row">
+          <div class="step-num">3</div>
+          <div class="step-text">Open a new worksheet tab at the bottom (+) and press <kbd>Ctrl+V</kbd>.</div>
+        </div>
+        <div class="step-row">
+          <div class="step-num">4</div>
+          <div class="step-text"><strong>Work exclusively from this new tab!</strong> Your raw data stays safe on Tab 1, and your number filters will work perfectly here.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="section-head amber">⚠ Common Import Traps</div>
+      <table class="section">
+        <thead><tr><th style="width:34%">Issue</th><th>What to check &amp; fix</th></tr></thead>
+        <tbody>
+          <tr class="trap-row">
+            <td class="label">Gene names → dates</td>
+            <td>Excel silently converts <code>MARCH1</code>, <code>SEPT4</code> to dates. Once saved, the name is <strong>gone forever</strong>. Fix: set <code>Id</code> column to <strong>Text</strong> in Step 3.
+              <div class="compare-pair">
+                <div class="cbox bad"><div class="cbox-label">✗ what Excel shows</div>MARCH1 → 01-Mar<br>SEPT4 → 04-Sep</div>
+                <div class="cbox good"><div class="cbox-label">✓ what it should be</div>MARCH1<br>SEPT4</div>
+              </div>
+            </td>
+          </tr>
+          <tr class="trap-row">
+            <td class="label">Decimals as text (EU/Greek locale)</td>
+            <td>If your computer uses <code>,</code> as a decimal, values with <code>.</code> import as left-aligned text — <strong>number filters won't work</strong>. Fix: Setting <strong>Advanced</strong> separators in Step 4.
+              <div class="compare-pair">
+                <div class="cbox bad"><div class="cbox-label">✗ text (left-aligned)</div>log2FC: -0.202 ←</div>
+                <div class="cbox good"><div class="cbox-label">✓ number (right-aligned)</div>log2FC: -0.202 →</div>
+              </div>
+            </td>
+          </tr>
+          <tr class="note-row">
+            <td class="label">p-values in scientific notation</td>
+            <td>Very small p-values display as <code>3.88E-74</code> or even <code>0</code>. The value is intact — sorting and filtering work correctly regardless.
+              <div class="compare-pair">
+                <div class="cbox bad"><div class="cbox-label">⚠ may display as</div>pvalue: 3.88E-74<br>or 0</div>
+                <div class="cbox good"><div class="cbox-label">✓ value is intact</div>Sorting &amp; filtering<br>work correctly</div>
+              </div>
+            </td>
+          </tr>
+          <tr class="note-row">
+            <td class="label">p-value / padj range</td>
+            <td><strong>The p-value / padj range is 0-1.</strong> Any numbers outside this range indicate a formatting issue (likely caused by Step 4 being skipped).</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+  <div class="col">
+
+    <div class="block">
+      <div class="section-head teal">Filtering for Significant Genes</div>
+      <p class="inner">Enable filters: click header row → <strong>Data → Filter</strong> or <kbd>Ctrl+Shift+L</kbd></p>
+      <table class="section">
+        <thead><tr><th style="width:34%">Goal</th><th>How to filter</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="label">Statistical significance</td>
+            <td><code>padj</code> dropdown → Number Filters → <strong>Less Than</strong><span class="tag tag-sig">padj &lt; 0.05</span>standard &nbsp;<span class="tag tag-sig">padj &lt; 0.01</span>stringent
+            </td>
+          </tr>
+          <tr>
+            <td class="label">Upregulated genes</td>
+            <td><code>log2FoldChange</code> → Number Filters → <strong>Greater Than</strong> <code>1</code><span class="tag tag-up">&gt; 1 = more than 2×</span>
+            </td>
+          </tr>
+          <tr>
+            <td class="label">Downregulated genes</td>
+            <td><code>log2FoldChange</code> → Number Filters → <strong>Less Than</strong> <code>-1</code><span class="tag tag-down">&lt; -1 = less than 0.5×</span>
+            </td>
+          </tr>
+          <tr>
+            <td class="label">Both directions at once</td>
+            <td><code>log2FoldChange</code> → Number Filters → <strong>Custom Filter </strong> → <strong>Between…</strong>
+              <div class="win-mac-note">
+                <strong>Mac:</strong> Select <strong>Between</strong> directly from the Filter menu.
+              </div>
+              <div class="filter-instruction">
+                Set: <em>is greater than</em> <code>1</code> &nbsp;<strong>OR</strong>&nbsp; <em>is less than</em> <code>-1</code>
+              </div>
+              <span class="sub-note">⚠ Make sure OR is selected, not AND</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="tip-box" style="margin:0;">
+        <strong>Recommended shortlist:</strong> &nbsp;<code>padj &lt; 0.05</code> &nbsp;+&nbsp; <code>|log2FoldChange| &gt; 1</code> — apply both filters together
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="section-head teal">Sorting</div>
+      <table class="section">
+        <thead><tr><th>Goal</th><th>Column</th><th>Order</th></tr></thead>
+        <tbody>
+          <tr><td>Most significant first</td><td><code>padj</code></td><td>Smallest → Largest</td></tr>
+          <tr><td>Highest upregulated</td><td><code>log2FoldChange</code></td><td>Largest → Smallest</td></tr>
+          <tr><td>Highest downregulated</td><td><code>log2FoldChange</code></td><td>Smallest → Largest</td></tr>
+          <tr><td>Highest expressed</td><td><code>baseMean</code></td><td>Largest → Smallest</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="block">
+      <div class="section-head navy">Keyboard Shortcuts</div>
+      <table class="section">
+        <thead><tr><th>Keys</th><th>Action</th></tr></thead>
+        <tbody>
+          <tr><td><kbd>Ctrl+Shift+L</kbd></td><td>Toggle AutoFilter on/off</td></tr>
+          <tr><td><kbd>Ctrl+H</kbd></td><td>Find &amp; Replace (e.g. fix . → ,)</td></tr>
+          <tr><td><kbd>Ctrl+F</kbd></td><td>Find a gene by name</td></tr>
+          <tr><td><kbd>Ctrl+Down</kbd></td><td>Jump to last filled cell in column</td></tr>
+          <tr><td><kbd>Ctrl+Shift+Down</kbd></td><td>Select to last filled cell in column</td></tr>
+          <tr><td><kbd>Ctrl+A</kbd></td><td>Select all cells in the sheet</td></tr>
+          <tr><td><kbd>Ctrl+C</kbd></td><td>Copy selected cells to Clipboard</td></tr>
+          <tr><td><kbd>Ctrl+X</kbd></td><td>Cut selected cells to Clipboard</td></tr>
+          <tr><td><kbd>Ctrl+V</kbd></td><td>Paste from Clipboard</td></tr>
+          <tr><td><kbd>Ctrl+Z</kbd></td><td>Undo last action — <strong>Panic button</strong> :)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>
+
+<div class="full-width-block">
+  <div class="section-head navy">Quality of Life &amp; Saving</div>
+  <table class="section">
+    <thead><tr><th style="width:25%">Goal</th><th>Action</th></tr></thead>
+    <tbody>
+      <tr>
+        <td class="label">Keep headers visible</td>
+        <td><strong>View → Freeze Panes → Freeze Top Row</strong><br>
+          <span class="sub-note">So you don't lose track of columns when scrolling.</span>
+        </td>
+      </tr>
+      <tr>
+        <td class="label">Save filters &amp; formatting</td>
+        <td><strong>File → Save As → Excel Workbook (*.xlsx)</strong><br>
+          <span class="sub-note"><span style="color:#7a1f1f; font-weight:bold;">⚠ Critical:</span> If you hit save on the original .txt file, Excel drops your filters, widths, and formatting!</span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="footer-bar">
+  &nbsp; IMBB-FORTH Bioinformatics Unit &nbsp;
+</div>
+
+</body>
+</html>
