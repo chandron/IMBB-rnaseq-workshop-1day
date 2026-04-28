@@ -117,8 +117,7 @@ Just because a gene is statistically significant, it doesn't mean that the chang
 
 ```{r filter-up-regulated, eval=FALSE}
 # Filter for UP-regulated genes
-# We use the & symbol to combine rules! In our case, we want to combine the statistical rule with the biological significance rule!
-up_genes <- subset(clean_data, ____ < ____ & ____ > ____)
+up_genes <- subset(sig_genes, ____ > ____)
 
 # How many UP-regulated genes did you find?
 nrow(up_genes)
@@ -134,7 +133,7 @@ Now let's find the genes that the virus suppressed!
 
 ```{r filter-down-regulated, eval=FALSE}
 # Filter for DOWN-regulated genes
-down_genes <- subset(clean_data, ____ < ____ & ____ < ____)
+down_genes <- subset(sig_genes, ____ < ____)
 
 # How many DOWN-regulated genes did you find?
 nrow(down_genes)
@@ -150,6 +149,8 @@ Tip: the `abs()`(absolute value) function effectively turns all negative numbers
 
 ```{r filter-all-degs, eval=FALSE}
 # Filter for total statistically and biologically significant genes
+# We can also use the & symbol to combine rules!
+# In our case, we can combine the statistical rule with the biological significance rule, to filter the clean_data table directly, instead of filtering the sig_genes table.
 total_genes <- subset(clean_data, ____ < ____ & abs(____) > ____)
 
 # How many total statistically and biologically significant genes did you find?
@@ -158,7 +159,7 @@ nrow(total_genes)
 
 ### STEP 6: Save Your Discoveries!
 
-You found the genes! Now let's save them to your computer so you can use them for your g:profiler analysis!
+You found the genes! Now let's save them to your computer!
 
 **CODE CHALLENGE:** Fill in the `____` with the name(s) of the R object(s) that you want to save into (a) file(s).
 
@@ -168,6 +169,8 @@ You found the genes! Now let's save them to your computer so you can use them fo
 # Remember to always place file names into quotes! (e.g., "my_awesome_results.txt")
 write.table(____, file = ____, sep = "\t", row.names = FALSE)
 
+#You can also save their Ids in separate files, for your g:profiler analysis!
+write.table(____, file = ____, sep = "\t", row.names = FALSE, col.names = FALSE, quote = FALSE)
 
 ```
 
