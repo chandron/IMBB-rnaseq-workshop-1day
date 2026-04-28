@@ -14,26 +14,6 @@ Note: The code blocks below will cause an error if you try to run them before re
   
 ***
 
-### Setting Up Your Workspace
-
-R scripts run in a specific folder on your computer called the **working directory**. Before we begin, we need to know where R is currently looking, and then tell it where it *should* look to find your data.
-
-**How to find your file path:**
-* **MAC:** Right-click + Option your file -> select "Copy as Pathname" - do not include the file name as part of the path!
-* **WINDOWS:** Shift + Right-click your file -> select "Copy as path" (Remember to change `\` to `/` in R!) - do not include the file name as part of the path!
-
-```{r setup-directory}
-# The getwd() function tells you exactly which folder R is currently looking at.
-getwd()
-
-# The setwd() function tells R where your data is saved.
-# setwd("C:/Users/YourName/My_file_location") # Windows example
-# setwd("/Users/YourName/My_file_location") # Mac example
-setwd("/Users/electratsaglioti/Downloads")
-```
-
-***
-
 ### STEP 0: How to use Code Chunks
 
 Check out this example!
@@ -52,7 +32,30 @@ print("Hello World")
 ```
 
 **Rule to remember:** In R, when you are typing "plain text" (like a file name), you must put it in "quotation marks". When you are typing a number or a column name, you don't need to.
+
+***  
   
+### Setting Up Your Workspace
+
+R scripts run in a specific folder on your computer called the **working directory**. Before we begin, we need to know where R is currently looking, and then tell it where it *should* look to find your data.
+
+**How to find your file path:**
+* **MAC:** Right-click + Option your file -> select "Copy as Pathname" - do not include the file name as part of the path!
+* **WINDOWS:** Shift + Right-click your file -> select "Copy as path" (Remember to change `\` to `/` in R!) - do not include the file name as part of the path!
+
+```{r setup-directory}
+# The getwd() function tells you exactly which folder R is currently looking at (your working directory).
+getwd()
+
+# The setwd() function sets your working directory (you need to change your working directory to where the InfluenzaAvsNonInfected.complete.txt file is located).
+# setwd("C:/Users/YourName/My_file_location") # Windows example
+# setwd("/Users/YourName/My_file_location") # Mac example
+setwd(____)
+
+```
+
+***
+
 ### STEP 1: Load and Clean the Data
   
 First, we need to load the data into R and remove any rows with missing data (NAs). Run the chunk below to get started.
