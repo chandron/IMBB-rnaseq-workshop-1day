@@ -35,7 +35,7 @@ print("All good.")
 
 If it prints "All good." — the environment is ready.
 
-For this course you will also need to install rmarkdown package.  
+For this course you will also need to install the rmarkdown package.  
 All you need to do is run: 
 ```r
 install.packages("rmarkdown")
@@ -97,7 +97,7 @@ print("All good.")
 If it prints "All good." — the environment is ready.
 
 
-For this course you will also need to install rmarkdown package.  
+For this course you will also need to install the rmarkdown package.  
 All you need to do is run: 
 ```r
 install.packages("rmarkdown")
@@ -160,7 +160,7 @@ print("All good.")
 
 If it prints "All good." — the environment is ready.
 
-For this course you will also need to install rmarkdown package.  
+For this course you will also need to install the rmarkdown package.  
 All you need to do is run: 
 ```r
 install.packages("rmarkdown")
