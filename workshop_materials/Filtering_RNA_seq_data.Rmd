@@ -50,7 +50,7 @@ getwd()
 # The setwd() function sets your working directory (you need to change your working directory to where the InfluenzaAvsNonInfected.complete.txt file is located).
 # setwd("C:/Users/YourName/My_file_location") # Windows example
 # setwd("/Users/YourName/My_file_location") # Mac example
-setwd(____)
+setwd("/Users/electratsaglioti/Downloads")
 
 ```
 
@@ -149,14 +149,14 @@ Tip: the `abs()`(absolute value) function effectively turns all negative numbers
 **CODE CHALLENGE:** Fill in the blanks below to find the down-regulated genes.
 
 ```{r filter-all-degs, eval=FALSE}
-# Filter for DOWN-regulated genes
-down_genes <- subset(clean_data, ____ < ____ & abs(____) < ____)
+# Filter for total statistically and biologically significant genes
+down_genes <- subset(clean_data, ____ < ____ & abs(____) > ____)
 
-# How many DOWN-regulated genes did you find?
+# How many total statistically and biologically significant genes did you find?
 nrow(total_genes)
 ```
 
-### STEP 5: Save Your Discoveries!
+### STEP 6: Save Your Discoveries!
 
 You found the genes! Now let's save them to your computer so you can use them for your g:profiler analysis!
 
