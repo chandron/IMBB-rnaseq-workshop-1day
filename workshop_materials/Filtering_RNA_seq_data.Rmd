@@ -47,7 +47,7 @@ R scripts run in a specific folder on your computer called the **working directo
 # The getwd() function tells you exactly which folder R is currently looking at (your working directory).
 getwd()
 
-# The setwd() function sets your working directory (you need to change your working directory to where the InfluenzaAvsNonInfected.complete.txt file is located).
+# The setwd() function sets your working directory (you need to change your working directory to where your workshop files are located).
 # setwd("C:/Users/YourName/My_file_location") # Windows example
 # setwd("/Users/YourName/My_file_location") # Mac example
 setwd("/Users/electratsaglioti/Downloads")
