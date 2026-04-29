@@ -14,10 +14,9 @@ Do you have R & Rstudio installed? → Check out our [R & RStudio Setup guide](h
 - Please download all files in the **workshop_materials** directory prior to the course.
 - No coding experience is required. The workshop uses web-based tools [(g:Profiler)](https://biit.cs.ut.ee/gprofiler/gost) for the functional enrichment analysis hands-on session.
 - Time permitting we may also have a hands-on session performing functional enrichment using the [clusterProfiler](https://bioconductor.org/packages/release/bioc/html/clusterProfiler.html) package in R.
-- To view the .RMD file and perform the hands-on activity using clusterProfiler, please follow the instructions below:
-  1. Open `rnaseq_workshop_1day.v2.Rmd` in RStudio
-  2. Click **Knit** to render the HTML notebook, or follow along with the pre-rendered version provided by the instructors
-  3. For the hands-on activity, the gene list files (`*_up.txt` and `*_down.txt`) should be in the same directory as the Rmd file
+- To view the .RMD files and perform the corresponding hands-on activities, please follow the instructions below:
+    1. Open `Filtering_RNA_seq_data.Rmd`, `rnaseq_workshop_1day.v2.Rmd` in RStudio. Click **Knit** to view the notebooks as HTML, or follow along with the pre-rendered version provided by the instructors. Click the "play" button in each cell to execute code.
+    2. For the hands-on activity, the complete differential expression table (`InfluenzaAvsNonInfected.complete.txt`) and gene list files (`*_up.txt` and `*_down.txt`) should be in the same directory as the Rmd file
 
 ---
 
