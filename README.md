@@ -18,11 +18,11 @@ Do you have R & Rstudio installed? → Check out our [R & RStudio Setup guide](h
     1. Open `Filtering_RNA_seq_data.Rmd`, `rnaseq_workshop_1day.v2.Rmd` in RStudio. Click **Knit** to view the notebooks as HTML, or follow along with the pre-rendered version provided by the instructors. Click the "play" button in each cell to execute code.
     2. For the hands-on activity, the complete differential expression table (`InfluenzaAvsNonInfected.complete.txt`) and gene list files (`*_up.txt` and `*_down.txt`) should be in the same directory as the Rmd file
 
----
-
 ## Scope
 
 ⚠️ This workshop covers **eukaryotic** bulk RNA-seq only. Prokaryotic RNA-seq requires different alignment strategies, annotation resources, and analysis tools.
+
+---
 
 ## Session structure
 
